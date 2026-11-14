@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Food Donations | Share Food, Build Community</title>
+<meta name="description" content="Explore how food donations can bring neighbors together and help good food go further in your community.">
+<meta property="og:title" content="Food Donations | Share Food, Build Community">
+<meta property="og:description" content="Explore how food donations can bring neighbors together and help good food go further in your community.">
+<meta property="og:image" content="https://images.typeform.com/images/ROCXGkuYpadV">
+<meta property="og:site_name" content="Food Donations">
+<style>
+  :root { --ink:#1f2a1f; --muted:#5b665b; --bg:#fbf8f2; --accent:#2f6b3f; --card:#ffffff; --border:#e6e0d2; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin:0; font-family: Georgia, "Times New Roman", serif; color:var(--ink); background:var(--bg); line-height:1.6; }
+  img { max-width:100%; display:block; }
+  a { color:inherit; }
+  header { position:sticky; top:0; z-index:10; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 24px; background:var(--bg); border-bottom:1px solid var(--border); }
+  header .brand { font-weight:bold; font-size:1.1rem; text-decoration:none; }
+  nav { display:flex; gap:20px; font-family: system-ui, sans-serif; font-size:.95rem; }
+  nav a { text-decoration:none; color:var(--muted); }
+  nav a:hover { color:var(--ink); }
+  .btn { display:inline-block; padding:12px 24px; background:var(--accent); color:#fff; border-radius:999px; text-decoration:none; font-family:system-ui,sans-serif; font-weight:600; border:none; cursor:pointer; font-size:.95rem; }
+  .btn:hover { filter:brightness(1.1); }
+  section { padding:64px 24px; max-width:1100px; margin:0 auto; }
+  .hero { text-align:center; padding-top:80px; }
+  .hero h1 { font-size:clamp(2.2rem,6vw,4rem); margin:0 0 16px; line-height:1.1; }
+  .hero p { max-width:640px; margin:0 auto 28px; font-size:1.2rem; color:var(--muted); }
+  .hero-img { width:100%; max-width:480px; margin:40px auto 0; border-radius:16px; }
+  .gallery { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-top:32px; }
+  .gallery img { width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:12px; }
+  .split { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; }
+  .split.reverse .text { order:2; }
+  .split img { border-radius:16px; width:100%; }
+  .split h2 { font-size:2rem; margin:0 0 12px; }
+  .split p { color:var(--muted); font-size:1.1rem; }
+  .stories h2 { text-align:center; font-size:2rem; margin-bottom:4px; }
+  .stories .note { text-align:center; color:var(--muted); font-style:italic; margin-bottom:32px; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; }
+  .card { background:var(--card); border-radius:16px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,.06); }
+  .card .photo { width:100%; aspect-ratio:4/3; object-fit:cover; }
+  .card .body { padding:20px; }
+  .card h3 { margin:0 0 8px; }
+  .card .who { display:flex; align-items:center; gap:12px; margin-top:16px; font-family:system-ui,sans-serif; font-size:.9rem; }
+  .card .who img { width:44px; height:44px; border-radius:50%; object-fit:cover; }
+  .card .who small { color:var(--muted); display:block; }
+
+  /* --- NGO OTP PORTAL STYLES --- */
+  .get-involved { background:#eef3e9; border-radius:24px; padding:48px 32px; }
+  .portal-header { text-align:center; max-width:650px; margin:0 auto 28px; }
+  .portal-header h2 { font-size:2.2rem; margin:0 0 8px; }
+  .portal-header p { color:var(--muted); margin:0; font-family:system-ui,sans-serif; }
+  .tabs { display:flex; justify-content:center; gap:12px; margin-bottom:32px; flex-wrap:wrap; }
+  .tab-btn { padding:10px 22px; border-radius:999px; font-family:system-ui,sans-serif; font-weight:600; border:1px solid var(--accent); background:#fff; color:var(--accent); cursor:pointer; }
+  .tab-btn.active { background:var(--accent); color:#fff; }
+  .portal-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; text-align:left; font-family:system-ui,sans-serif; }
+  .box { background:#fff; padding:24px; border-radius:16px; box-shadow:0 2px 10px rgba(0,0,0,.05); }
+  .box h3 { margin:0 0 6px; font-family:Georgia,serif; font-size:1.35rem; }
+  .box p.sub { margin:0 0 18px; font-size:.9rem; color:var(--muted); }
+  .form-group { margin-bottom:14px; }
+  .form-group label { display:block; font-size:.85rem; font-weight:600; margin-bottom:5px; color:var(--ink); }
+  .form-group input, .form-group select, .form-group textarea { width:100%; padding:10px 12px; border:1px solid #cbd5c0; border-radius:8px; font-size:.95rem; font-family:inherit; }
+  .form-group textarea { resize:vertical; min-height:64px; }
+  .row2 { display:grid; grid-template-columns:2fr 1fr; gap:12px; }
+  .alert { padding:12px 14px; border-radius:8px; font-size:.9rem; margin-top:14px; display:none; }
+  .alert.success { display:block; background:#e2f3e6; color:#1c4d29; border:1px solid #b5dfc0; }
+  .alert.error { display:block; background:#fde8e8; color:#9b1c1c; border:1px solid #f8b4b4; }
+
+  /* Donation type switch (Meals / Ration / Biogas) */
+  .type-switch { display:flex; gap:8px; margin-bottom:18px; background:#f1f5ec; padding:5px; border-radius:999px; }
+  .type-btn { flex:1; padding:9px 8px; border:none; background:transparent; border-radius:999px; font-family:system-ui,sans-serif; font-weight:600; font-size:.85rem; color:var(--accent); cursor:pointer; }
+  .type-btn.active { background:var(--accent); color:#fff; }
+  .ration-chips { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+  .chip { padding:6px 12px; background:#f1f5ec; border-radius:999px; font-size:.8rem; color:var(--accent); font-weight:600; }
+
+  /* Biogas / waste section */
+  .estimate-box { background:#fff8e6; border:1px solid #f1deaa; border-radius:12px; padding:14px 16px; margin-bottom:14px; font-size:.9rem; }
+  .estimate-box .amount { font-size:1.6rem; font-weight:700; color:#8a5a00; }
+  .estimate-box .line { display:flex; justify-content:space-between; gap:12px; color:var(--muted); margin-top:4px; }
+  .partner-box { background:#f1f5ec; border-radius:12px; padding:14px 16px; margin-bottom:14px; font-size:.88rem; }
+  .partner-box strong { display:block; margin-bottom:4px; color:var(--accent); }
+  .tiny-note { font-size:.78rem; color:var(--muted); margin-top:8px; }
+
+  .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:16px; margin-bottom:24px; font-family:system-ui,sans-serif; }
+  .stat-card { background:#fff; padding:18px; border-radius:14px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,.04); }
+  .stat-card .num { font-size:1.8rem; font-weight:700; color:var(--accent); }
+  .stat-card .lbl { font-size:.85rem; color:var(--muted); }
+  .table-wrap { overflow-x:auto; background:#fff; border-radius:14px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,.04); font-family:system-ui,sans-serif; }
+  table { width:100%; border-collapse:collapse; font-size:.9rem; text-align:left; }
+  th, td { padding:10px 12px; border-bottom:1px solid #eee; vertical-align:top; }
+  th { color:var(--muted); font-weight:600; }
+  .badge { padding:3px 10px; border-radius:999px; font-size:.78rem; font-weight:600; }
+  .badge.pending { background:#fef3c7; color:#92400e; }
+  .badge.served { background:#def7ec; color:#03543f; }
+  .badge.meal { background:#e0ecff; color:#1e429f; }
+  .badge.ration { background:#fde8d4; color:#9c4a10; }
+  .badge.biogas { background:#e6e0f8; color:#4b2e9c; }
+  .hidden { display:none; }
+
+  footer { text-align:center; padding:40px 24px; border-top:1px solid var(--border); color:var(--muted); font-family:system-ui,sans-serif; font-size:.9rem; margin-top:40px; }
+  footer .links { display:flex; gap:16px; justify-content:center; margin:12px 0; flex-wrap:wrap; }
+  @media (max-width:760px){ .split, .portal-grid{grid-template-columns:1fr;} .split.reverse .text{order:0;} nav{display:none;} }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="#top">Food Donations</a>
+  <nav>
+    <a href="#purpose">Our purpose</a>
+    <a href="#how-to-help">How to help</a>
+    <a href="#get-involved">NGO OTP Portal</a>
+  </nav>
+  <a class="btn" href="#get-involved">Donate &amp; Verify</a>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <h1>Share food with neighbors who need it</h1>
+    <p>Bring people together around food donations. Explore how to contribute and help make good food go further in your community.</p>
+    <a class="btn" href="#get-involved">Get involved</a>
+    <img class="hero-img" src="https://images.typeform.com/images/OyAVqPiJdOvY" alt="Selected image">
+    <div class="gallery">
+      <img src="https://images.typeform.com/images/GkJgPCEZUQFI" alt="People gathered around a large bowl of food">
+      <img src="https://images.typeform.com/images/clLoBBorGPgh" alt="A person holding a tray at a Chabeel service event in Phillaur">
+      <img src="https://images.typeform.com/images/xeJOgBxvXqGt" alt="A man preparing food at a farmers' protest near Delhi">
+      <img src="https://images.typeform.com/images/ilLWDkfPBFTG" alt="A woman serving food">
+    </div>
+  </section>
+
+  <section id="purpose" class="split">
+    <div class="text">
+      <h2>Good food belongs on a table</h2>
+      <p>Food donations can connect surplus and pantry staples with people who can use them. Whether you're an individual, a local business, or a community group, there's a way to take part.</p>
+    </div>
+    <img src="https://images.typeform.com/images/TOBPMvMMooGy" alt="Food donation">
+  </section>
+
+  <section id="how-to-help" class="split reverse">
+    <div class="text">
+      <h2>Make your donation count</h2>
+      <p>Before you donate, check with your local food program about what it can accept. Unopened pantry staples and fresh produce may be useful, depending on local needs and storage capacity.</p>
+    </div>
+    <img src="https://images.typeform.com/images/tKOzQYiEKvHt" alt="Making a donation count">
+  </section>
+
+  <section class="split">
+    <div class="text">
+      <h2>Everyone can help</h2>
+      <p>You can contribute food, help organize a collection, or share opportunities with friends and classmates. Small acts of generosity can bring a community together.</p>
+    </div>
+    <img src="https://images.typeform.com/images/dvklDrKWVpUp" alt="Everyone can help">
+  </section>
+
+  <section class="stories">
+    <h2>Community voices — sample stories</h2>
+    <p class="note">Illustrative placeholders to replace with real stories and permission.</p>
+    <div class="cards">
+      <article class="card">
+        <img class="photo" src="https://images.typeform.com/images/GkJgPCEZUQFI" alt="People gathered around a large bowl of food">
+        <div class="body">
+          <h3>A shared effort</h3>
+          <p>Sample quote: Bringing neighbors together around a food collection can make generosity feel tangible.</p>
+          <div class="who"><img src="https://images.typeform.com/images/xmcMVflWeJUr" alt="Stock portrait"><div>Maya<small>Sample volunteer</small></div></div>
+        </div>
+      </article>
+      <article class="card">
+        <img class="photo" src="https://images.typeform.com/images/clLoBBorGPgh" alt="A person holding a tray at a Chabeel service event in Phillaur">
+        <div class="body">
+          <h3>Food with a purpose</h3>
+          <p>Sample quote: It's meaningful to see food put to good use in the community.</p>
+          <div class="who"><img src="https://images.typeform.com/images/WVyCoyCmMfgX" alt="Stock portrait"><div>Alex<small>Sample donor</small></div></div>
+        </div>
+      </article>
+      <article class="card">
+        <img class="photo" src="https://images.typeform.com/images/xeJOgBxvXqGt" alt="A man preparing food at a farmers' protest near Delhi">
+        <div class="body">
+          <h3>Working together</h3>
+          <p>Sample quote: A collection can be a simple way for classmates and neighbors to help.</p>
+          <div class="who"><img src="https://images.typeform.com/images/iihNlvnsmqTo" alt="Stock portrait"><div>Sam<small>Sample organizer</small></div></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div class="gallery">
+      <img src="https://images.typeform.com/images/mUpbmVzzZljM" alt="Food donation photo 1">
+      <img src="https://images.typeform.com/images/URuQoisDnuVi" alt="Food donation photo 2">
+      <img src="https://images.typeform.com/images/TCEVqCCQNMOl" alt="Food donation photo 3">
+      <img src="https://images.typeform.com/images/PPgiGVKZMEsw" alt="A Kerala sadhya meal served on banana leaves">
+      <img src="https://images.typeform.com/images/tjAoyJFKfsoN" alt="An Indian thali with rice, dal, vegetables and flatbread">
+      <img src="https://images.typeform.com/images/clLoBBorGPgh" alt="A person holding a tray at a Chabeel service event in Phillaur">
+    </div>
+  </section>
+
+  <!-- INTEGRATED NGO MEAL + RATION + BIOGAS DONATION & OTP VERIFICATION SYSTEM -->
+  <section id="get-involved" class="get-involved">
+    <div class="portal-header">
+      <h2>NGO Donation &amp; OTP Verification</h2>
+      <p>Donate cooked meals, ration (rice, wheat, grains, spices) or send rotten / wasted food to biogas and compost partners. The NGO or collection partner shares a 4-digit OTP with you to verify and log the official timestamp.</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" id="tabDonorBtn" onclick="switchTab('donor')">1. Donor Portal (Donate &amp; Verify OTP)</button>
+      <button class="tab-btn" id="tabNgoBtn" onclick="switchTab('ngo')">2. NGO Official Dashboard (Monthly Records)</button>
+    </div>
+
+    <!-- VIEW 1: DONOR PORTAL -->
+    <div id="donorView" class="portal-grid">
+
+      <!-- Step A: Initiate Donation (Meals, Ration or Biogas) -->
+      <div class="box">
+        <h3>Step 1: Make a Donation</h3>
+        <p class="sub">Choose what you want to donate. A 4-digit verification OTP is generated for the NGO official / collection partner.</p>
+
+        <div class="type-switch">
+          <button type="button" class="type-btn active" id="typeMealBtn" onclick="switchDonationType('meal')">🍛 Meals</button>
+          <button type="button" class="type-btn" id="typeRationBtn" onclick="switchDonationType('ration')">🌾 Ration</button>
+          <button type="button" class="type-btn" id="typeBiogasBtn" onclick="switchDonationType('biogas')">♻️ Biogas / Waste</button>
+        </div>
+
+        <!-- Meal donation form -->
+        <form id="mealForm" onsubmit="handleDonate(event)">
+          <div class="form-group">
+            <label for="donorPhone">Your Phone Number</label>
+            <input type="tel" id="donorPhone" placeholder="e.g., 9876543210" required>
+          </div>
+          <div class="form-group">
+            <label for="ngoSelect">Select Ashram / NGO</label>
+            <select id="ngoSelect" required>
+              <option value="Shanti Ashram">Shanti Ashram</option>
+              <option value="Annapurna Seva Trust">Annapurna Seva Trust</option>
+              <option value="Karuna Shelter Home">Karuna Shelter Home</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="mealCount">Number of Meals Donated</label>
+            <input type="number" id="mealCount" min="1" max="500" value="5" required>
+          </div>
+          <button type="submit" class="btn" style="width:100%;">Submit Meal Donation &amp; Send OTP to NGO</button>
+        </form>
+
+        <!-- Ration donation form -->
+        <form id="rationForm" class="hidden" onsubmit="handleRationDonate(event)">
+          <div class="ration-chips">
+            <span class="chip">Rice</span>
+            <span class="chip">Wheat / Atta</span>
+            <span class="chip">Grains</span>
+            <span class="chip">Pulses</span>
+            <span class="chip">Spices</span>
+          </div>
+          <div class="form-group">
+            <label for="rationPhone">Your Phone Number</label>
+            <input type="tel" id="rationPhone" placeholder="e.g., 9876543210" required>
+          </div>
+          <div class="form-group">
+            <label for="rationNgoSelect">Select Ashram / NGO</label>
+            <select id="rationNgoSelect" required>
+              <option value="Shanti Ashram">Shanti Ashram</option>
+              <option value="Annapurna Seva Trust">Annapurna Seva Trust</option>
+              <option value="Karuna Shelter Home">Karuna Shelter Home</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="rationItem">Ration Item</label>
+            <select id="rationItem" required>
+              <option value="Rice">Rice</option>
+              <option value="Wheat / Atta">Wheat / Atta</option>
+              <option value="Other Grains (Jowar, Bajra, Ragi, Millets)">Other Grains (Jowar, Bajra, Ragi, Millets)</option>
+              <option value="Pulses / Dal">Pulses / Dal</option>
+              <option value="Spices">Spices (Turmeric, Chilli, Coriander, etc.)</option>
+            </select>
+          </div>
+          <div class="row2">
+            <div class="form-group">
+              <label for="rationQty">Quantity</label>
+              <input type="number" id="rationQty" min="0.5" step="0.5" value="5" required>
+            </div>
+            <div class="form-group">
+              <label for="rationUnit">Unit</label>
+              <select id="rationUnit">
+                <option value="kg">kg</option>
+                <option value="g">grams</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="rationNote">Notes (optional)</label>
+            <input type="text" id="rationNote" placeholder="e.g., sealed packets, best before Mar 2027">
+          </div>
+          <button type="submit" class="btn" style="width:100%;">Submit Ration Donation &amp; Send OTP to NGO</button>
+        </form>
+
+        <!-- Biogas / wasted food form -->
+        <form id="biogasForm" class="hidden" onsubmit="handleBiogasDonate(event)">
+          <div class="form-group">
+            <label for="biogasPhone">Your Phone Number</label>
+            <input type="tel" id="biogasPhone" placeholder="e.g., 9876543210" required>
+          </div>
+          <div class="form-group">
+            <label for="biogasNgoSelect">Ashram / NGO the food came from</label>
+            <select id="biogasNgoSelect" required>
+              <option value="Shanti Ashram">Shanti Ashram</option>
+              <option value="Annapurna Seva Trust">Annapurna Seva Trust</option>
+              <option value="Karuna Shelter Home">Karuna Shelter Home</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="wasteType">Type of Rotten / Wasted Food</label>
+            <select id="wasteType" onchange="updateWasteEstimate()" required></select>
+          </div>
+          <div class="form-group">
+            <label for="wasteQty">Quantity of Wasted Food (kg)</label>
+            <input type="number" id="wasteQty" min="1" step="0.5" value="10" oninput="updateWasteEstimate()" required>
+          </div>
+
+          <div class="estimate-box">
+            <div>Estimated amount you receive</div>
+            <div class="amount" id="estAmount">₹0</div>
+            <div class="line"><span>Rate</span><span id="estRate">₹0 / kg</span></div>
+            <div class="line"><span>Estimated biogas</span><span id="estBiogas">0 m³</span></div>
+            <div class="line"><span>Kept out of landfill</span><span id="estLandfill">0 kg</span></div>
+          </div>
+
+          <div class="form-group">
+            <label for="pickupAddress">Pickup Address (where the wasted food is)</label>
+            <textarea id="pickupAddress" placeholder="House / Ashram name, street, area, city, PIN" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="partnerSelect">Biogas / Compost Collection Partner</label>
+            <select id="partnerSelect" onchange="showPartner()" required></select>
+          </div>
+          <div class="partner-box" id="partnerBox"></div>
+
+          <button type="submit" class="btn" style="width:100%;">Submit Waste Pickup &amp; Send OTP</button>
+          <div class="tiny-note">Rates and partner details above are sample values. Replace them in the <code>WASTE_RATES</code> and <code>PARTNERS</code> lists in the script with your real ones.</div>
+        </form>
+
+        <div id="donateAlert" class="alert"></div>
+      </div>
+
+      <!-- Step B: Verify OTP (works for meals, ration and biogas) -->
+      <div class="box">
+        <h3>Step 2: Confirm Donation Received (Enter OTP)</h3>
+        <p class="sub">Once the meal is served, the ration is received or the waste is collected, ask the NGO official / partner for the OTP and enter it below.</p>
+        <form onsubmit="handleVerifyOTP(event)">
+          <div class="form-group">
+            <label for="verifyPhone">Your Registered Phone Number</label>
+            <input type="tel" id="verifyPhone" placeholder="e.g., 9876543210" required>
+          </div>
+          <div class="form-group">
+            <label for="otpInput">4-Digit OTP from NGO / Partner</label>
+            <input type="text" id="otpInput" maxlength="4" placeholder="e.g., 4829" required>
+          </div>
+          <button type="submit" class="btn" style="width:100%;">Verify OTP &amp; Log Donation</button>
+        </form>
+        <div id="verifyAlert" class="alert"></div>
+      </div>
+    </div>
+
+    <!-- VIEW 2: NGO OFFICIAL DASHBOARD -->
+    <div id="ngoView" class="hidden">
+      <div class="box" style="margin-bottom:20px; display:flex; gap:16px; align-items:flex-end; flex-wrap:wrap; font-family:system-ui,sans-serif;">
+        <div style="flex:1; min-width:200px;">
+          <label style="display:block; font-size:.85rem; font-weight:600; margin-bottom:5px;">Filter by Ashram / NGO</label>
+          <select id="dashboardNgoFilter" onchange="renderNgoDashboard()" style="width:100%; padding:10px; border-radius:8px; border:1px solid #cbd5c0;">
+            <option value="ALL">All Registered NGOs</option>
+            <option value="Shanti Ashram">Shanti Ashram</option>
+            <option value="Annapurna Seva Trust">Annapurna Seva Trust</option>
+            <option value="Karuna Shelter Home">Karuna Shelter Home</option>
+          </select>
+        </div>
+        <div style="flex:1; min-width:180px;">
+          <label style="display:block; font-size:.85rem; font-weight:600; margin-bottom:5px;">Select Month</label>
+          <input type="month" id="dashboardMonthFilter" onchange="renderNgoDashboard()" style="width:100%; padding:9px; border-radius:8px; border:1px solid #cbd5c0;">
+        </div>
+        <div style="flex:1; min-width:180px;">
+          <label style="display:block; font-size:.85rem; font-weight:600; margin-bottom:5px;">Donation Type</label>
+          <select id="dashboardTypeFilter" onchange="renderNgoDashboard()" style="width:100%; padding:10px; border-radius:8px; border:1px solid #cbd5c0;">
+            <option value="ALL">All Types</option>
+            <option value="MEAL">Meals only</option>
+            <option value="RATION">Ration only</option>
+            <option value="BIOGAS">Biogas / Waste only</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="num" id="statMealsServed">0</div>
+          <div class="lbl">Meals Served (Selected Month)</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="statRationKg">0</div>
+          <div class="lbl">Ration Received (kg)</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="statWasteKg">0</div>
+          <div class="lbl">Wasted Food Diverted (kg)</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="statBiogasM3">0</div>
+          <div class="lbl">Est. Biogas Produced (m³)</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="statWasteAmount">₹0</div>
+          <div class="lbl">Amount Earned from Waste</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="statOrdersServed">0</div>
+          <div class="lbl">Verified Donations</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="statPendingOtps">0</div>
+          <div class="lbl">Pending OTP Confirmations</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <h3 style="margin:0 0 12px; font-family:Georgia,serif;">Official Donation &amp; OTP Log</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Type</th>
+              <th>Donor Phone</th>
+              <th>Ashram / NGO</th>
+              <th>Details</th>
+              <th>NGO OTP</th>
+              <th>Status</th>
+              <th>Date &amp; Time Verified</th>
+            </tr>
+          </thead>
+          <tbody id="recordsTableBody">
+            <!-- Populated dynamically by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <strong>Food Donations</strong>
+  <div>Sharing food, building community.</div>
+  <div class="links">
+    <a href="https://www.instagram.com">Instagram</a>
+    <a href="https://www.facebook.com">Facebook</a>
+    <a href="https://www.youtube.com">YouTube</a>
+  </div>
+  <div class="links">
+    <a href="#purpose">Our purpose</a>
+    <a href="#how-to-help">How to help</a>
+    <a href="#get-involved">Get involved</a>
+  </div>
+  <div>© Food Donations. All rights reserved.</div>
+</footer>
+
+<script>
+  // ====== EDIT THESE: sample rates (₹ per kg) and sample partners ======
+  // These are estimated placeholder values, NOT verified market prices.
+  // Real rates vary by city and by plant, so confirm with your partner and update here.
+  const WASTE_RATES = {
+    'Cooked food (rice, dal, curry, roti)': 3,
+    'Vegetable & fruit scraps / spoiled produce': 2,
+    'Spoiled grains, bread & bakery items': 4,
+    'Mixed kitchen waste (dairy, sweets, etc.)': 2
+  };
+  const BIOGAS_M3_PER_KG = 0.1; // midpoint of 0.08 - 0.12 m³ per kg of food waste
+
+  // Sample collection partners: replace with real names, addresses and phone numbers
+  const PARTNERS = [
+    { name: 'Green Loop Biogas Plant (Sample)', address: 'Plot 12, Industrial Area, Phase 2, Your City - 000001', phone: '+91 90000 00001' },
+    { name: 'City Compost & CBG Centre (Sample)', address: 'Municipal Waste Yard, Ring Road, Your City - 000002', phone: '+91 90000 00002' },
+    { name: 'Gaushala Feed Collection Point (Sample)', address: 'Near Main Gaushala, Village Road, Your City - 000003', phone: '+91 90000 00003' }
+  ];
+
+  // Load existing donations from browser localStorage or start fresh
+  let donations = JSON.parse(localStorage.getItem('ngo_meal_donations')) || [];
+
+  // Set default month filter to current YYYY-MM
+  const now = new Date();
+  const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  document.getElementById('dashboardMonthFilter').value = currentMonth;
+
+  function saveDonations() {
+    localStorage.setItem('ngo_meal_donations', JSON.stringify(donations));
+  }
+
+  // Escape user text before inserting into HTML
+  function esc(str) {
+    return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function typeOf(d) { return d.type || 'MEAL'; } // older records have no type = meals
+  function generateOtp() { return String(Math.floor(1000 + Math.random() * 9000)); }
+  function nextId() { return 'DON-' + (1000 + donations.length + 1); }
+  function round2(n) { return Math.round(n * 100) / 100; }
+
+  // Fill waste type + partner dropdowns
+  (function initBiogasLists() {
+    const typeSel = document.getElementById('wasteType');
+    typeSel.innerHTML = Object.keys(WASTE_RATES).map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join('');
+    const partnerSel = document.getElementById('partnerSelect');
+    partnerSel.innerHTML = PARTNERS.map((p, i) => `<option value="${i}">${esc(p.name)}</option>`).join('');
+  })();
+
+  function updateWasteEstimate() {
+    const type = document.getElementById('wasteType').value;
+    const qty = parseFloat(document.getElementById('wasteQty').value) || 0;
+    const rate = WASTE_RATES[type] || 0;
+    document.getElementById('estAmount').textContent = '₹' + round2(qty * rate);
+    document.getElementById('estRate').textContent = '₹' + rate + ' / kg';
+    document.getElementById('estBiogas').textContent = round2(qty * BIOGAS_M3_PER_KG) + ' m³';
+    document.getElementById('estLandfill').textContent = round2(qty) + ' kg';
+  }
+
+  function showPartner() {
+    const p = PARTNERS[parseInt(document.getElementById('partnerSelect').value, 10)];
+    document.getElementById('partnerBox').innerHTML =
+      `<strong>${esc(p.name)}</strong>📍 ${esc(p.address)}<br>📞 ${esc(p.phone)}`;
+  }
+
+  updateWasteEstimate();
+  showPartner();
+
+  function switchTab(tab) {
+    const donorView = document.getElementById('donorView');
+    const ngoView = document.getElementById('ngoView');
+    const tabDonorBtn = document.getElementById('tabDonorBtn');
+    const tabNgoBtn = document.getElementById('tabNgoBtn');
+
+    if (tab === 'donor') {
+      donorView.classList.remove('hidden');
+      ngoView.classList.add('hidden');
+      tabDonorBtn.classList.add('active');
+      tabNgoBtn.classList.remove('active');
+    } else {
+      donorView.classList.add('hidden');
+      ngoView.classList.remove('hidden');
+      tabDonorBtn.classList.remove('active');
+      tabNgoBtn.classList.add('active');
+      renderNgoDashboard();
+    }
+  }
+
+  // Switch between Meal, Ration and Biogas forms
+  function switchDonationType(type) {
+    const forms = { meal: 'mealForm', ration: 'rationForm', biogas: 'biogasForm' };
+    const btns = { meal: 'typeMealBtn', ration: 'typeRationBtn', biogas: 'typeBiogasBtn' };
+    document.getElementById('donateAlert').className = 'alert';
+    Object.keys(forms).forEach(k => {
+      document.getElementById(forms[k]).classList.toggle('hidden', k !== type);
+      document.getElementById(btns[k]).classList.toggle('active', k === type);
+    });
+  }
+
+  // 1a. MEAL donation
+  function handleDonate(e) {
+    e.preventDefault();
+    const phone = document.getElementById('donorPhone').value.trim();
+    const ngo = document.getElementById('ngoSelect').value;
+    const meals = parseInt(document.getElementById('mealCount').value, 10);
+    const otp = generateOtp();
+
+    const newRecord = {
+      id: nextId(), type: 'MEAL', phone: phone, ngo: ngo, meals: meals,
+      otp: otp, status: 'PENDING', createdAtMonth: currentMonth, servedAt: null
+    };
+
+    donations.unshift(newRecord);
+    saveDonations();
+    document.getElementById('verifyPhone').value = phone;
+
+    const alertBox = document.getElementById('donateAlert');
+    alertBox.className = 'alert success';
+    alertBox.innerHTML = `<strong>Meal Donation Registered (${newRecord.id})!</strong><br>
+      A 4-digit OTP has been sent to <strong>${esc(ngo)}</strong>.<br>
+      <em>(Demo Tip: Switch to the "NGO Official Dashboard" tab to see OTP <strong>${otp}</strong> and enter it in Step 2 once served.)</em>`;
+
+    e.target.reset();
+    document.getElementById('mealCount').value = 5;
+  }
+
+  // 1b. RATION donation
+  function handleRationDonate(e) {
+    e.preventDefault();
+    const phone = document.getElementById('rationPhone').value.trim();
+    const ngo = document.getElementById('rationNgoSelect').value;
+    const item = document.getElementById('rationItem').value;
+    const qtyInput = parseFloat(document.getElementById('rationQty').value);
+    const unit = document.getElementById('rationUnit').value;
+    const note = document.getElementById('rationNote').value.trim();
+    const qtyKg = unit === 'g' ? qtyInput / 1000 : qtyInput;
+    const otp = generateOtp();
+
+    const newRecord = {
+      id: nextId(), type: 'RATION', phone: phone, ngo: ngo, item: item,
+      qtyKg: qtyKg, qtyLabel: qtyInput + ' ' + unit, note: note,
+      otp: otp, status: 'PENDING', createdAtMonth: currentMonth, servedAt: null
+    };
+
+    donations.unshift(newRecord);
+    saveDonations();
+    document.getElementById('verifyPhone').value = phone;
+
+    const alertBox = document.getElementById('donateAlert');
+    alertBox.className = 'alert success';
+    alertBox.innerHTML = `<strong>Ration Donation Registered (${newRecord.id})!</strong><br>
+      ${esc(newRecord.qtyLabel)} of <strong>${esc(item)}</strong> pledged to <strong>${esc(ngo)}</strong>.<br>
+      A 4-digit OTP has been sent to the NGO.<br>
+      <em>(Demo Tip: Switch to the "NGO Official Dashboard" tab to see OTP <strong>${otp}</strong> and enter it in Step 2 once the ration is received.)</em>`;
+
+    e.target.reset();
+    document.getElementById('rationQty').value = 5;
+  }
+
+  // 1c. BIOGAS / WASTED FOOD pickup
+  function handleBiogasDonate(e) {
+    e.preventDefault();
+    const phone = document.getElementById('biogasPhone').value.trim();
+    const ngo = document.getElementById('biogasNgoSelect').value;
+    const wasteType = document.getElementById('wasteType').value;
+    const qtyKg = parseFloat(document.getElementById('wasteQty').value);
+    const address = document.getElementById('pickupAddress').value.trim();
+    const partner = PARTNERS[parseInt(document.getElementById('partnerSelect').value, 10)];
+    const rate = WASTE_RATES[wasteType] || 0;
+    const amount = round2(qtyKg * rate);
+    const biogasM3 = round2(qtyKg * BIOGAS_M3_PER_KG);
+    const otp = generateOtp();
+
+    const newRecord = {
+      id: nextId(), type: 'BIOGAS', phone: phone, ngo: ngo,
+      wasteType: wasteType, qtyKg: qtyKg, rate: rate, amount: amount, biogasM3: biogasM3,
+      address: address, partnerName: partner.name, partnerAddress: partner.address, partnerPhone: partner.phone,
+      otp: otp, status: 'PENDING', createdAtMonth: currentMonth, servedAt: null
+    };
+
+    donations.unshift(newRecord);
+    saveDonations();
+    document.getElementById('verifyPhone').value = phone;
+
+    const alertBox = document.getElementById('donateAlert');
+    alertBox.className = 'alert success';
+    alertBox.innerHTML = `<strong>Waste Pickup Registered (${newRecord.id})!</strong><br>
+      <strong>${qtyKg} kg</strong> of ${esc(wasteType)} at ₹${rate}/kg = <strong>₹${amount}</strong> estimated.<br>
+      Estimated biogas: <strong>${biogasM3} m³</strong><br><br>
+      <strong>Collection partner:</strong> ${esc(partner.name)}<br>
+      📍 ${esc(partner.address)}<br>
+      📞 ${esc(partner.phone)}<br><br>
+      <strong>Pickup address:</strong> ${esc(address)}<br><br>
+      A 4-digit OTP has been sent to the partner.<br>
+      <em>(Demo Tip: Switch to the "NGO Official Dashboard" tab to see OTP <strong>${otp}</strong> and enter it in Step 2 once collected.)</em>`;
+
+    e.target.reset();
+    document.getElementById('wasteQty').value = 10;
+    updateWasteEstimate();
+    showPartner();
+  }
+
+  // 2. Donor enters OTP -> marks donation as SERVED / RECEIVED / COLLECTED with exact date & time
+  function handleVerifyOTP(e) {
+    e.preventDefault();
+    const phone = document.getElementById('verifyPhone').value.trim();
+    const enteredOtp = document.getElementById('otpInput').value.trim();
+    const alertBox = document.getElementById('verifyAlert');
+
+    const record = donations.find(d => d.phone === phone && d.otp === enteredOtp);
+
+    if (!record) {
+      alertBox.className = 'alert error';
+      alertBox.innerHTML = `Invalid Phone Number or OTP. Please check with the NGO official / partner and try again.`;
+      return;
+    }
+
+    if (record.status === 'SERVED') {
+      alertBox.className = 'alert error';
+      alertBox.innerHTML = `This OTP was already verified on <strong>${esc(record.servedAt)}</strong>.`;
+      return;
+    }
+
+    const dt = new Date();
+    const formattedDateTime = dt.toLocaleDateString('en-IN', {
+      day: '2-digit', month: 'short', year: 'numeric'
+    }) + ' at ' + dt.toLocaleTimeString('en-IN', {
+      hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
+
+    record.status = 'SERVED';
+    record.servedAt = formattedDateTime;
+    record.servedMonth = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}`;
+    saveDonations();
+
+    const t = typeOf(record);
+    let what;
+    if (t === 'RATION') what = `${esc(record.qtyLabel)} of ${esc(record.item)} marked as RECEIVED`;
+    else if (t === 'BIOGAS') what = `${record.qtyKg} kg of wasted food marked as COLLECTED (₹${record.amount})`;
+    else what = `${record.meals} meal(s) marked as SERVED`;
+
+    alertBox.className = 'alert success';
+    alertBox.innerHTML = `<strong>Verified! ${what} at ${esc(record.ngo)}.</strong><br>
+      Official Timestamp Recorded: <strong>${formattedDateTime}</strong>`;
+
+    e.target.reset();
+  }
+
+  // 3. Render NGO Official Dashboard & Monthly Counts
+  function renderNgoDashboard() {
+    const selectedNgo = document.getElementById('dashboardNgoFilter').value;
+    const selectedMonth = document.getElementById('dashboardMonthFilter').value;
+    const selectedType = document.getElementById('dashboardTypeFilter').value;
+
+    const filtered = donations.filter(d => {
+      const matchesNgo = (selectedNgo === 'ALL' || d.ngo === selectedNgo);
+      const recordMonth = d.servedMonth || d.createdAtMonth;
+      const matchesMonth = (!selectedMonth || recordMonth === selectedMonth);
+      const matchesType = (selectedType === 'ALL' || typeOf(d) === selectedType);
+      return matchesNgo && matchesMonth && matchesType;
+    });
+
+    const servedRecords = filtered.filter(d => d.status === 'SERVED');
+    const pendingRecords = filtered.filter(d => d.status === 'PENDING');
+    const totalMeals = servedRecords.filter(d => typeOf(d) === 'MEAL').reduce((s, d) => s + (d.meals || 0), 0);
+    const totalKg = servedRecords.filter(d => typeOf(d) === 'RATION').reduce((s, d) => s + (d.qtyKg || 0), 0);
+    const wasteRecords = servedRecords.filter(d => typeOf(d) === 'BIOGAS');
+    const wasteKg = wasteRecords.reduce((s, d) => s + (d.qtyKg || 0), 0);
+    const wasteBiogas = wasteRecords.reduce((s, d) => s + (d.biogasM3 || 0), 0);
+    const wasteAmount = wasteRecords.reduce((s, d) => s + (d.amount || 0), 0);
+
+    document.getElementById('statMealsServed').textContent = totalMeals;
+    document.getElementById('statRationKg').textContent = round2(totalKg);
+    document.getElementById('statWasteKg').textContent = round2(wasteKg);
+    document.getElementById('statBiogasM3').textContent = round2(wasteBiogas);
+    document.getElementById('statWasteAmount').textContent = '₹' + round2(wasteAmount);
+    document.getElementById('statOrdersServed').textContent = servedRecords.length;
+    document.getElementById('statPendingOtps').textContent = pendingRecords.length;
+
+    const tbody = document.getElementById('recordsTableBody');
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#5b665b; padding:20px;">No donation records found for this selection.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(d => {
+      const t = typeOf(d);
+      let details, badgeClass, badgeLabel, doneLabel;
+      if (t === 'RATION') {
+        details = `<strong>${esc(d.qtyLabel)}</strong> ${esc(d.item)}${d.note ? `<br><small style="color:#5b665b;">${esc(d.note)}</small>` : ''}`;
+        badgeClass = 'ration'; badgeLabel = 'Ration'; doneLabel = 'RECEIVED';
+      } else if (t === 'BIOGAS') {
+        details = `<strong>${d.qtyKg} kg</strong> ${esc(d.wasteType)}<br>
+          <small style="color:#5b665b;">₹${d.rate}/kg = <strong>₹${d.amount}</strong> · ~${d.biogasM3} m³ biogas</small><br>
+          <small style="color:#5b665b;">📍 Pickup: ${esc(d.address)}</small><br>
+          <small style="color:#5b665b;">Partner: ${esc(d.partnerName)}, ${esc(d.partnerAddress)} · 📞 ${esc(d.partnerPhone)}</small>`;
+        badgeClass = 'biogas'; badgeLabel = 'Biogas'; doneLabel = 'COLLECTED';
+      } else {
+        details = `<strong>${d.meals}</strong> meal(s)`;
+        badgeClass = 'meal'; badgeLabel = 'Meal'; doneLabel = 'SERVED';
+      }
+      const statusText = d.status === 'SERVED' ? doneLabel : 'PENDING';
+      return `
+        <tr>
+          <td><strong>${esc(d.id)}</strong></td>
+          <td><span class="badge ${badgeClass}">${badgeLabel}</span></td>
+          <td>${esc(d.phone)}</td>
+          <td>${esc(d.ngo)}</td>
+          <td>${details}</td>
+          <td><code style="background:#f3f4f6; padding:3px 7px; border-radius:4px; font-weight:bold;">${esc(d.otp)}</code></td>
+          <td><span class="badge ${d.status === 'SERVED' ? 'served' : 'pending'}">${statusText}</span></td>
+          <td>${d.servedAt ? esc(d.servedAt) : '<em>Awaiting OTP verification</em>'}</td>
+        </tr>`;
+    }).join('');
+  }
+</script>
+
+</body>
+</html>

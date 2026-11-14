@@ -1,0 +1,17 @@
+{
+  "name": "annam-backend",
+  "version": "1.0.0",
+  "description": "Annam surplus-food rescue backend: expiry queue, feasibility, matching, batching, OTP handover, impact",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node -e \"require('./seed').reseed()\"",
+    "test": "node tests/run.js",
+    "demo": "node scripts/demo.js"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}
