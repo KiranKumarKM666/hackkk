@@ -1,0 +1,1050 @@
+{
+  "agentfile": 1,
+  "installs": [
+    {
+      "slug": "academic-anthropologist",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "academic-geographer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "academic-historian",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "academic-narratologist",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "academic-psychologist",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "academic-statistician",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "academic-anthropologist",
+      "tool": "claudeCode",
+      "projectPath": null
+    },
+    {
+      "slug": "academic-geographer",
+      "tool": "claudeCode",
+      "projectPath": null
+    },
+    {
+      "slug": "academic-historian",
+      "tool": "claudeCode",
+      "projectPath": null
+    },
+    {
+      "slug": "academic-narratologist",
+      "tool": "claudeCode",
+      "projectPath": null
+    },
+    {
+      "slug": "academic-psychologist",
+      "tool": "claudeCode",
+      "projectPath": null
+    },
+    {
+      "slug": "academic-statistician",
+      "tool": "claudeCode",
+      "projectPath": null
+    },
+    {
+      "slug": "design-visual-storyteller",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "godot-gameplay-scripter",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-backend-architect",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-backend-architect",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-backend-architect",
+      "tool": "opencode",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-ai-data-remediation-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-ai-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-api-platform-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-ats-validator-architect",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-autonomous-optimization-architect",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-china-network-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-cms-developer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-code-reviewer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-codebase-onboarding-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-data-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-data-visualization-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-database-optimizer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-database-reliability-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-desktop-app-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-developer-tooling-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-devops-automator",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-drupal-performance",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-drupal-shopping-cart",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-email-intelligence-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-embedded-firmware-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-feishu-integration-developer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-filament-optimization-specialist",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-finops-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-frontend-developer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-gaussdb-expert",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-git-workflow-master",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-i18n-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-identity-access-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-incident-response-commander",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-iot-fleet-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-it-service-manager",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-knowledge-graph-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-llm-post-training-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-minimal-change-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-mobile-app-builder",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-mobile-release-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-multi-agent-systems-architect",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-network-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-orgscript-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-payments-billing-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-pdf-engine-architect",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-platform-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-privacy-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-prompt-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-rag-pipeline-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-rapid-prototyper",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-realtime-collaboration-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-rust-refactoring-specialist",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-search-relevance-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-section-508-specialist",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-senior-developer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-software-architect",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-solidity-smart-contract-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-sre",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-technical-writer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-universal-document-compiler",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-uswds-developer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-video-streaming-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-voice-ai-integration-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-webassembly-engineer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-wechat-mini-program-developer",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-wordpress-performance",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-wordpress-shopping-cart",
+      "tool": "codex",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-ai-data-remediation-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-ai-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-api-platform-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-ats-validator-architect",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-autonomous-optimization-architect",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-china-network-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-cms-developer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-code-reviewer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-codebase-onboarding-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-data-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-data-visualization-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-database-optimizer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-database-reliability-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-desktop-app-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-developer-tooling-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-devops-automator",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-drupal-performance",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-drupal-shopping-cart",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-email-intelligence-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-embedded-firmware-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-feishu-integration-developer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-filament-optimization-specialist",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-finops-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-frontend-developer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-gaussdb-expert",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-git-workflow-master",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-i18n-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-identity-access-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-incident-response-commander",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-iot-fleet-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-it-service-manager",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-knowledge-graph-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-llm-post-training-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-minimal-change-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-mobile-app-builder",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-mobile-release-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-multi-agent-systems-architect",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-network-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-orgscript-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-payments-billing-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-pdf-engine-architect",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-platform-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-privacy-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-prompt-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-rag-pipeline-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-rapid-prototyper",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-realtime-collaboration-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-rust-refactoring-specialist",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-search-relevance-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-section-508-specialist",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-senior-developer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-software-architect",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-solidity-smart-contract-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-sre",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-technical-writer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-universal-document-compiler",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-uswds-developer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-video-streaming-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-voice-ai-integration-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-webassembly-engineer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-wechat-mini-program-developer",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-wordpress-performance",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-wordpress-shopping-cart",
+      "tool": "copilot",
+      "projectPath": null
+    },
+    {
+      "slug": "engineering-api-platform-engineer",
+      "tool": "copilot",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-api-platform-engineer",
+      "tool": "cursor",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-ai-data-remediation-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-ai-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-ats-validator-architect",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-autonomous-optimization-architect",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-backend-architect",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-china-network-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-cms-developer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-code-reviewer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-codebase-onboarding-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-data-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-data-visualization-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-database-optimizer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-database-reliability-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-desktop-app-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-developer-tooling-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-devops-automator",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-drupal-performance",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-drupal-shopping-cart",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-email-intelligence-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-embedded-firmware-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-feishu-integration-developer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-filament-optimization-specialist",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-finops-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-frontend-developer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-gaussdb-expert",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-git-workflow-master",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-i18n-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-identity-access-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-incident-response-commander",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-iot-fleet-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-it-service-manager",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-knowledge-graph-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-llm-post-training-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-minimal-change-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-mobile-app-builder",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-mobile-release-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-multi-agent-systems-architect",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-network-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-orgscript-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-payments-billing-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-pdf-engine-architect",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-platform-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-privacy-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-prompt-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-rag-pipeline-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-rapid-prototyper",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-realtime-collaboration-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-rust-refactoring-specialist",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-search-relevance-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-section-508-specialist",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-senior-developer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-software-architect",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-solidity-smart-contract-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-sre",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-technical-writer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-universal-document-compiler",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-uswds-developer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-video-streaming-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-voice-ai-integration-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-webassembly-engineer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-wechat-mini-program-developer",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-wordpress-performance",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-wordpress-shopping-cart",
+      "tool": "opencode",
+      "projectPath": "C:\\Users\\user\\Desktop\\webb"
+    },
+    {
+      "slug": "engineering-api-platform-engineer",
+      "tool": "opencode",
+      "projectPath": null
+    }
+  ]
+}
