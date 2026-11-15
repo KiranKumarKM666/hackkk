@@ -1,0 +1,1960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Annam & Food Donations | Real-Time Surplus Food Rescue</title>
+<meta name="description" content="Annam: Real-time surplus-food rescue platform connecting donors, NGOs, receivers, and volunteers with algorithmic dispatch, Google Maps, and verified OTP handover.">
+
+<!-- Leaflet CSS for guaranteed interactive map fallback -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<style>
+  :root {
+    --ink: #1f2a1f;
+    --muted: #5b665b;
+    --bg: #fbf8f2;
+    --accent: #2f6b3f;
+    --accent-light: #eaf3ec;
+    --accent-hover: #265733;
+    --card: #ffffff;
+    --border: #e6e0d2;
+    --danger: #c53030;
+    --danger-bg: #fff5f5;
+    --warn: #d69e2e;
+    --warn-bg: #fffaf0;
+    --success: #2f855a;
+    --success-bg: #f0fff4;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin:0; font-family: Georgia, "Times New Roman", serif; color:var(--ink); background:var(--bg); line-height:1.6; }
+  img { max-width:100%; display:block; }
+  a { color:inherit; }
+
+  header { position:sticky; top:0; z-index:1000; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 24px; background:var(--bg); border-bottom:1px solid var(--border); box-shadow:0 1px 4px rgba(0,0,0,0.03); }
+  header .brand { font-weight:bold; font-size:1.15rem; text-decoration:none; display:flex; align-items:center; gap:8px; }
+  header .brand span { background:var(--accent); color:#fff; padding:2px 8px; border-radius:6px; font-size:0.8rem; font-family:system-ui,sans-serif; }
+  
+  nav { display:flex; gap:16px; font-family: system-ui, sans-serif; font-size:.9rem; flex-wrap:wrap; }
+  nav a { text-decoration:none; color:var(--muted); padding:6px 10px; border-radius:6px; transition:all .2s; }
+  nav a:hover, nav a.active { color:var(--accent); background:var(--accent-light); font-weight:600; }
+  
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 20px; background:var(--accent); color:#fff; border-radius:999px; text-decoration:none; font-family:system-ui,sans-serif; font-weight:600; border:none; cursor:pointer; font-size:.92rem; transition:background .2s, filter .2s; }
+  .btn:hover:not(:disabled) { background:var(--accent-hover); filter:brightness(1.05); }
+  .btn:disabled { opacity:0.6; cursor:not-allowed; }
+  .btn-sm { padding:6px 14px; font-size:.82rem; border-radius:8px; }
+  .btn-outline { background:transparent; border:1px solid var(--accent); color:var(--accent); }
+  .btn-outline:hover:not(:disabled) { background:var(--accent); color:#fff; }
+  .btn-danger { background:var(--danger); }
+  .btn-danger:hover:not(:disabled) { background:#9b1c1c; }
+  
+  section { padding:48px 24px; max-width:1160px; margin:0 auto; }
+  .hero { text-align:center; padding-top:60px; padding-bottom:40px; }
+  .hero h1 { font-size:clamp(2.1rem,5vw,3.6rem); margin:0 0 16px; line-height:1.15; }
+  .hero p { max-width:680px; margin:0 auto 24px; font-size:1.15rem; color:var(--muted); }
+  .hero-img { width:100%; max-width:480px; margin:32px auto 0; border-radius:16px; }
+  .gallery { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin-top:28px; }
+  .gallery img { width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:12px; }
+
+  /* --- APP PORTAL & TABS --- */
+  .app-container { background:#eef3e9; border-radius:24px; padding:36px 28px; margin:24px auto 60px; box-shadow:0 4px 20px rgba(0,0,0,0.04); }
+  .portal-header { text-align:center; max-width:760px; margin:0 auto 24px; }
+  .portal-header h2 { font-size:2.1rem; margin:0 0 8px; }
+  .portal-header p { color:var(--muted); margin:0; font-family:system-ui,sans-serif; font-size:.95rem; }
+
+  .live-badge { display:inline-flex; align-items:center; gap:6px; background:#dcfce7; color:#166534; padding:4px 12px; border-radius:999px; font-size:0.8rem; font-weight:600; font-family:system-ui,sans-serif; margin-bottom:12px; }
+  .pulse-dot { width:8px; height:8px; border-radius:50%; background:#22c55e; box-shadow:0 0 0 0 rgba(34,197,94,0.7); animation:pulse 2s infinite; }
+  @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(34,197,94,0.7);} 70%{box-shadow:0 0 0 8px rgba(34,197,94,0);} 100%{box-shadow:0 0 0 0 rgba(34,197,94,0);} }
+
+  .app-tabs { display:flex; justify-content:center; gap:8px; margin-bottom:28px; flex-wrap:wrap; }
+  .tab-nav-btn { padding:10px 18px; border-radius:999px; font-family:system-ui,sans-serif; font-weight:600; font-size:.88rem; border:1px solid var(--accent); background:#fff; color:var(--accent); cursor:pointer; transition:all .2s; }
+  .tab-nav-btn:hover { background:var(--accent-light); }
+  .tab-nav-btn.active { background:var(--accent); color:#fff; border-color:var(--accent); box-shadow:0 2px 8px rgba(47,107,63,0.25); }
+
+  .tab-pane { display:none; }
+  .tab-pane.active { display:block; }
+
+  .portal-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; text-align:left; font-family:system-ui,sans-serif; }
+  .box { background:#fff; padding:24px; border-radius:16px; box-shadow:0 2px 10px rgba(0,0,0,.05); border:1px solid #ebe5d8; }
+  .box h3 { margin:0 0 6px; font-family:Georgia,serif; font-size:1.35rem; }
+  .box p.sub { margin:0 0 18px; font-size:.9rem; color:var(--muted); }
+  
+  .form-group { margin-bottom:14px; }
+  .form-group label { display:block; font-size:.85rem; font-weight:600; margin-bottom:5px; color:var(--ink); }
+  .form-group input, .form-group select, .form-group textarea { width:100%; padding:10px 12px; border:1px solid #cbd5c0; border-radius:8px; font-size:.95rem; font-family:inherit; background:#fff; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(47,107,63,0.15); }
+  .form-group textarea { resize:vertical; min-height:64px; }
+  .form-hint { font-size:.78rem; color:var(--muted); margin-top:4px; }
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+
+  .alert { padding:12px 16px; border-radius:8px; font-size:.9rem; margin-top:14px; display:none; }
+  .alert.success { display:block; background:#e2f3e6; color:#1c4d29; border:1px solid #b5dfc0; }
+  .alert.error { display:block; background:#fde8e8; color:#9b1c1c; border:1px solid #f8b4b4; }
+  .alert.info { display:block; background:#ebf5ff; color:#1e429f; border:1px solid #c3ddfd; }
+  .alert.warn { display:block; background:#fff8e6; color:#8a5a00; border:1px solid #f1deaa; }
+
+  /* Sub-switches */
+  .type-switch { display:flex; gap:8px; margin-bottom:18px; background:#f1f5ec; padding:5px; border-radius:999px; }
+  .type-btn { flex:1; padding:8px; border:none; background:transparent; border-radius:999px; font-family:system-ui,sans-serif; font-weight:600; font-size:.85rem; color:var(--accent); cursor:pointer; }
+  .type-btn.active { background:var(--accent); color:#fff; }
+  .ration-chips { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+  .chip { padding:5px 12px; background:#f1f5ec; border-radius:999px; font-size:.8rem; color:var(--accent); font-weight:600; }
+
+  /* Stat cards */
+  .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:16px; margin-bottom:24px; font-family:system-ui,sans-serif; }
+  .stat-card { background:#fff; padding:16px; border-radius:14px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,.04); border:1px solid #ece7dc; }
+  .stat-card .num { font-size:1.8rem; font-weight:700; color:var(--accent); line-height:1.2; }
+  .stat-card .lbl { font-size:.82rem; color:var(--muted); margin-top:4px; }
+
+  /* Tables */
+  .table-wrap { overflow-x:auto; background:#fff; border-radius:14px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,.04); font-family:system-ui,sans-serif; border:1px solid #ece7dc; }
+  table { width:100%; border-collapse:collapse; font-size:.88rem; text-align:left; }
+  th, td { padding:10px 12px; border-bottom:1px solid #eee; vertical-align:middle; }
+  th { color:var(--muted); font-weight:600; background:#fbfdf9; }
+  .badge { display:inline-block; padding:3px 10px; border-radius:999px; font-size:.78rem; font-weight:600; }
+  .badge.pending { background:#fef3c7; color:#92400e; }
+  .badge.served { background:#def7ec; color:#03543f; }
+  .badge.open { background:#dcfce7; color:#15803d; }
+  .badge.matched { background:#e0e7ff; color:#4338ca; }
+  .badge.in_transit { background:#fef9c3; color:#a16207; }
+  .badge.delivered { background:#dcfce7; color:#166534; }
+  .badge.expired { background:#fee2e2; color:#b91c1c; }
+  .badge.green { background:#dcfce7; color:#15803d; }
+  .badge.amber { background:#fef3c7; color:#b45309; }
+  .badge.red { background:#fee2e2; color:#b91c1c; }
+  .badge.meal { background:#e0ecff; color:#1e429f; }
+  .badge.ration { background:#fde8d4; color:#9c4a10; }
+  .badge.biogas { background:#e6e0f8; color:#4b2e9c; }
+
+  /* Map Container */
+  .map-card { background:#fff; border-radius:16px; padding:18px; box-shadow:0 2px 10px rgba(0,0,0,.05); border:1px solid #ebe5d8; margin-top:20px; font-family:system-ui,sans-serif; }
+  #mapViewport { width:100%; height:400px; border-radius:12px; border:1px solid #cbd5c0; margin-top:12px; position:relative; overflow:hidden; background:#e5e3df; }
+  #googleMapContainer { width:100%; height:100%; }
+  #leafletMapContainer { width:100%; height:100%; display:none; }
+
+  .hidden { display:none !important; }
+
+  /* Expiry Board Items */
+  .post-card { background:#fff; border-radius:12px; padding:16px; margin-bottom:12px; border-left:6px solid #ccc; box-shadow:0 2px 6px rgba(0,0,0,0.04); transition:transform .2s; }
+  .post-card:hover { transform:translateY(-2px); }
+  .post-card.green { border-left-color:#22c55e; }
+  .post-card.amber { border-left-color:#f59e0b; }
+  .post-card.red { border-left-color:#ef4444; }
+
+  /* Match Screen Items */
+  .match-candidate { background:#fbfdfa; border:1px solid #cbd5c0; border-radius:12px; padding:16px; margin-bottom:12px; }
+  .match-candidate.top { border:2px solid var(--accent); background:#f4fbf5; }
+  .score-bar { height:6px; background:#e2e8f0; border-radius:999px; overflow:hidden; margin:6px 0; }
+  .score-fill { height:100%; background:var(--accent); }
+
+  /* Handover Card */
+  .handover-card { background:#fff; border:1px solid #cbd5c0; border-radius:12px; padding:18px; margin-bottom:16px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
+  .checklist { display:flex; flex-direction:column; gap:10px; margin:14px 0; }
+  .checklist-item { display:flex; align-items:center; gap:10px; font-size:.9rem; }
+  .check-icon { width:22px; height:22px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:bold; font-size:.78rem; background:#e2e8f0; color:#64748b; }
+  .check-icon.done { background:#22c55e; color:#fff; }
+
+  footer { text-align:center; padding:40px 24px; border-top:1px solid var(--border); color:var(--muted); font-family:system-ui,sans-serif; font-size:.9rem; margin-top:40px; }
+  footer .links { display:flex; gap:16px; justify-content:center; margin:12px 0; flex-wrap:wrap; }
+
+  @media (max-width:820px){
+    .portal-grid, .row2, .row3 { grid-template-columns:1fr; }
+    nav { display:none; }
+    .app-tabs { gap:6px; }
+    .tab-nav-btn { font-size:.8rem; padding:8px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="#top">
+    <span>ANNAM</span> Food Rescue &amp; Donations
+  </a>
+  <nav>
+    <a href="#portal" onclick="switchAppTab('board')">Expiry Board</a>
+    <a href="#portal" onclick="switchAppTab('post')">Post Surplus</a>
+    <a href="#portal" onclick="switchAppTab('match')">Match</a>
+    <a href="#portal" onclick="switchAppTab('route')">Route &amp; Map</a>
+    <a href="#portal" onclick="switchAppTab('handover')">Handover</a>
+    <a href="#portal" onclick="switchAppTab('impact')">Impact</a>
+    <a href="#portal" onclick="switchAppTab('donorPortal')">NGO Portal</a>
+  </nav>
+  <a class="btn btn-sm" href="#portal" onclick="switchAppTab('post')">+ Post Surplus</a>
+</header>
+
+<main id="top">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="live-badge">
+      <div class="pulse-dot"></div>
+      <span id="liveServerClock">Connecting to Annam Real-Time Engine...</span>
+    </div>
+    <h1>Turn Surplus Food Into Community Meals</h1>
+    <p>Zero waste, 4-hour food-safety enforcement, Dijkstra-optimized pickup batching, and verified two-sided OTP handovers.</p>
+    <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+      <a class="btn" href="#portal" onclick="switchAppTab('board')">View Expiry Board</a>
+      <a class="btn btn-outline" href="#portal" onclick="switchAppTab('donorPortal')">NGO Donation Portal</a>
+    </div>
+    <div class="gallery">
+      <img src="https://images.typeform.com/images/GkJgPCEZUQFI" alt="People gathered around a large bowl of food">
+      <img src="https://images.typeform.com/images/clLoBBorGPgh" alt="A person holding a tray at a Chabeel service event in Phillaur">
+      <img src="https://images.typeform.com/images/xeJOgBxvXqGt" alt="A man preparing food at a farmers' protest near Delhi">
+      <img src="https://images.typeform.com/images/ilLWDkfPBFTG" alt="A woman serving food">
+    </div>
+  </section>
+
+  <!-- ==================== MAIN UNIFIED APPLICATION PORTAL ==================== -->
+  <section id="portal" class="app-container">
+    <div class="portal-header">
+      <h2>Annam Surplus Management &amp; NGO Hub</h2>
+      <p>Single platform powering fast-acting surplus food rescue, algorithmic receiver matching, driver route optimization with Google Maps, and monthly NGO verification logs.</p>
+    </div>
+
+    <!-- TABS NAVIGATION -->
+    <div class="app-tabs">
+      <button class="tab-nav-btn active" id="tabBtn_board" onclick="switchAppTab('board')">⏱️ Expiry Board (F2)</button>
+      <button class="tab-nav-btn" id="tabBtn_post" onclick="switchAppTab('post')">🍲 Post Surplus (F1)</button>
+      <button class="tab-nav-btn" id="tabBtn_match" onclick="switchAppTab('match')">🤝 Receiver Match (F3)</button>
+      <button class="tab-nav-btn" id="tabBtn_route" onclick="switchAppTab('route')">🗺️ Route &amp; Maps (F4)</button>
+      <button class="tab-nav-btn" id="tabBtn_handover" onclick="switchAppTab('handover')">📦 OTP Handover (F5)</button>
+      <button class="tab-nav-btn" id="tabBtn_impact" onclick="switchAppTab('impact')">📊 Impact Audit (F6)</button>
+      <button class="tab-nav-btn" id="tabBtn_donorPortal" onclick="switchAppTab('donorPortal')">🍛 NGO Portal (Donate/Verify)</button>
+      <button class="tab-nav-btn" id="tabBtn_ngoDashboard" onclick="switchAppTab('ngoDashboard')">📋 NGO Records</button>
+    </div>
+
+    <!-- SERVER NOTICE BANNER -->
+    <div id="globalServerBanner" class="alert warn" style="margin-bottom:20px; display:none;"></div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 1: EXPIRY BOARD (F2) -->
+    <!-- ============================================================ -->
+    <div id="tabPane_board" class="tab-pane active">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+        <div>
+          <h3 style="margin:0; font-family:Georgia,serif; font-size:1.4rem;">Live Expiry Board (Min-Heap Order)</h3>
+          <div style="font-size:0.85rem; color:var(--muted); font-family:system-ui,sans-serif;">Sorted by leave-by deadline (fastest delivery + 10m safety margin), not posted time.</div>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button class="btn btn-sm btn-outline" onclick="loadExpiryBoard()">🔄 Refresh Board</button>
+          <button class="btn btn-sm" onclick="switchAppTab('post')">+ Post New Surplus</button>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="num" id="statOpenPostsCount">0</div>
+          <div class="lbl">Open Surplus Posts</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="statUrgentPostsCount">0</div>
+          <div class="lbl">Urgent (&lt; 30m slack)</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="statTotalPortionsAvailable">0</div>
+          <div class="lbl">Total Portions</div>
+        </div>
+      </div>
+
+      <div id="expiryBoardList" style="font-family:system-ui,sans-serif;">
+        <div style="text-align:center; padding:30px; color:var(--muted); background:#fff; border-radius:12px;">Loading open posts...</div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 2: POST SURPLUS (F1) -->
+    <!-- ============================================================ -->
+    <div id="tabPane_post" class="tab-pane">
+      <div class="portal-grid">
+        <div class="box">
+          <h3>Post Surplus Food (F1)</h3>
+          <p class="sub">Register fresh surplus. The server strictly computes the safe-until window based on food-safety regulations (never client time).</p>
+          
+          <form id="postSurplusForm" onsubmit="handlePostSurplus(event)">
+            <div class="form-group">
+              <label for="postDonorSelect">Donor (Pick from Registered Donors)</label>
+              <select id="postDonorSelect" required>
+                <option value="">Loading donors...</option>
+              </select>
+            </div>
+
+            <div class="row2">
+              <div class="form-group">
+                <label for="postPortions">Portions (Meals)</label>
+                <input type="number" id="postPortions" min="1" max="2000" value="25" required oninput="calcKgEst()">
+                <div class="form-hint" id="postKgHint">~10 kg estimated</div>
+              </div>
+              <div class="form-group">
+                <label for="postDietType">Dietary Classification</label>
+                <select id="postDietType" required>
+                  <option value="veg">Vegetarian</option>
+                  <option value="nonveg">Non-Vegetarian</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row2">
+              <div class="form-group">
+                <label for="postFoodType">Food Item Type</label>
+                <select id="postFoodType" onchange="fetchSuggestedSafeUntil()" required>
+                  <option value="curry">Curry / Dal</option>
+                  <option value="cooked_rice">Cooked Rice</option>
+                  <option value="biryani">Biryani</option>
+                  <option value="roti">Roti / Chapati</option>
+                  <option value="sandwich">Sandwich</option>
+                  <option value="sweets">Sweets / Mithai</option>
+                  <option value="bakery">Bakery / Bread</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="postHoldingMethod">Holding Method</label>
+                <select id="postHoldingMethod" onchange="fetchSuggestedSafeUntil()" required>
+                  <option value="hot">Hot Hold (≥60°C)</option>
+                  <option value="room">Room Temperature</option>
+                  <option value="cold">Refrigerated (≤5°C)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row2">
+              <div class="form-group">
+                <label for="postCookedAgo">Cooked Ago (minutes)</label>
+                <input type="number" id="postCookedAgo" min="0" max="720" value="30" required oninput="fetchSuggestedSafeUntil()">
+              </div>
+              <div class="form-group">
+                <label for="postReadyIn">Ready for pickup in (minutes)</label>
+                <input type="number" id="postReadyIn" min="0" max="240" value="5" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="postPackaging">Packaging Condition</label>
+              <select id="postPackaging">
+                <option value="catering_trays">Catering Stainless Steel Trays</option>
+                <option value="sealed_containers">Sealed Food Containers</option>
+                <option value="bulk_vessels">Bulk Cooking Vessels</option>
+                <option value="packed_boxes">Individual Meal Boxes</option>
+                <option value="not_provided">Not Specified</option>
+              </select>
+            </div>
+
+            <div class="alert info" id="suggestedSafeAlert" style="display:block; margin-bottom:14px;">
+              <strong>Safety Guideline:</strong> <span id="suggestedSafeText">Calculating rule...</span>
+            </div>
+
+            <button type="submit" id="btnSubmitPost" class="btn" style="width:100%;">Post Surplus to Network</button>
+            <div id="postAlert" class="alert"></div>
+          </form>
+        </div>
+
+        <div class="box">
+          <h3>Food Safety Rules &amp; Non-Negotiables</h3>
+          <p class="sub">Annam's safety engine rejects overdue food at source and guarantees recipient protection.</p>
+          
+          <div style="background:#fffaf0; border:1px solid #fbd38d; border-radius:10px; padding:14px; margin-bottom:16px; font-size:.88rem;">
+            <strong>Hard Deadlines:</strong>
+            <ul style="margin:6px 0 0; padding-left:20px; color:#744210;">
+              <li>Safe-until times are strictly computed from official health regulations.</li>
+              <li>Donors may only <em>shorten</em> safe-until, never extend it.</li>
+              <li>Any post that cannot reach a receiver with a 10-minute safety buffer is systematically refused.</li>
+            </ul>
+          </div>
+
+          <div class="table-wrap">
+            <h4 style="margin:0 0 8px; font-family:Georgia,serif;">Current Rule Matrix</h4>
+            <table>
+              <thead>
+                <tr>
+                  <th>Food</th>
+                  <th>Holding</th>
+                  <th>Max Safe Mins</th>
+                </tr>
+              </thead>
+              <tbody id="safetyRulesBody">
+                <tr><td>Cooked Rice</td><td>Hot Hold</td><td>240 min (4h)</td></tr>
+                <tr><td>Cooked Rice</td><td>Room Temp</td><td>120 min (2h)</td></tr>
+                <tr><td>Curry / Dal</td><td>Hot Hold</td><td>240 min (4h)</td></tr>
+                <tr><td>Biryani</td><td>Hot Hold</td><td>240 min (4h)</td></tr>
+                <tr><td>Sandwich</td><td>Cold / Room</td><td>300 / 120 min</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 3: RECEIVER MATCH (F3) -->
+    <!-- ============================================================ -->
+    <div id="tabPane_match" class="tab-pane">
+      <div class="box" style="margin-bottom:20px; font-family:system-ui,sans-serif;">
+        <div style="display:flex; gap:14px; align-items:flex-end; flex-wrap:wrap;">
+          <div style="flex:1; min-width:240px;">
+            <label style="display:block; font-size:.85rem; font-weight:600; margin-bottom:5px;">Select Surplus Post to Match</label>
+            <select id="matchPostSelector" onchange="loadMatchesForSelected()" style="width:100%; padding:10px; border-radius:8px; border:1px solid #cbd5c0;">
+              <option value="">Choose an open post...</option>
+            </select>
+          </div>
+          <button class="btn btn-outline" onclick="loadMatchesForSelected()">Re-evaluate Matches</button>
+        </div>
+      </div>
+
+      <div id="matchResultsArea" style="font-family:system-ui,sans-serif;">
+        <div style="text-align:center; padding:30px; color:var(--muted); background:#fff; border-radius:12px;">
+          Select a post above to run receiver matching algorithms.
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 4: ROUTE & MAPS (F4 + GOOGLE MAPS) -->
+    <!-- ============================================================ -->
+    <div id="tabPane_route" class="tab-pane">
+      <div class="box" style="margin-bottom:20px; font-family:system-ui,sans-serif;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h3 style="margin:0; font-family:Georgia,serif;">Pickup Batching &amp; Route Dispatch (F4)</h3>
+            <p class="sub" style="margin:0;">Cheapest insertion algorithm batches nearby pickups into a single vehicle run while verifying every deadline.</p>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn" id="btnPlanBatch" onclick="planBatchRoute()">🚗 Plan Optimal Batched Route</button>
+            <button class="btn btn-outline" onclick="loadExistingRoutes()">History</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Route Details Card -->
+      <div id="routeDetailsArea" style="font-family:system-ui,sans-serif;">
+        <div style="text-align:center; padding:30px; color:var(--muted); background:#fff; border-radius:12px;">
+          Click "Plan Optimal Batched Route" to batch open accepted surplus pickups and visualize the path.
+        </div>
+      </div>
+
+      <!-- MAP CONTAINER: GOOGLE MAPS WITH LEAFLET FALLBACK -->
+      <div class="map-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <h4 style="margin:0; font-family:Georgia,serif; font-size:1.15rem;">Live Route Visualization (Bangalore Grid)</h4>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <span id="mapEngineBadge" class="badge" style="background:#e0f2fe; color:#0369a1;">Google Maps Ready</span>
+            <button class="btn btn-sm btn-outline" onclick="toggleMapEngine()">Toggle OSM / Google</button>
+          </div>
+        </div>
+
+        <div id="mapViewport">
+          <!-- Google Maps Layer -->
+          <div id="googleMapContainer"></div>
+          <!-- Leaflet Layer -->
+          <div id="leafletMapContainer"></div>
+        </div>
+        
+        <div style="font-size:0.8rem; color:var(--muted); margin-top:8px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+          <span>📍 Markers show pickup donors &amp; receiver destination. Green line indicates Dijkstra-calculated road path.</span>
+          <span>Google Maps API Key: <code style="background:#f3f4f6; padding:2px 6px; border-radius:4px;">YOUR_GOOGLE_MAPS_API_KEY</code></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 5: HANDOVER & OTP VERIFICATION (F5) -->
+    <!-- ============================================================ -->
+    <div id="tabPane_handover" class="tab-pane">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+        <div>
+          <h3 style="margin:0; font-family:Georgia,serif; font-size:1.4rem;">Handover &amp; Two-Sided OTP Verification (F5)</h3>
+          <div style="font-size:0.85rem; color:var(--muted); font-family:system-ui,sans-serif;">Impact counts only when donor confirms, driver uploads photo, and receiver enters verified OTP.</div>
+        </div>
+        <button class="btn btn-sm btn-outline" onclick="loadHandovers()">🔄 Refresh Handovers</button>
+      </div>
+
+      <div id="handoversListArea" style="font-family:system-ui,sans-serif;">
+        <div style="text-align:center; padding:30px; color:var(--muted); background:#fff; border-radius:12px;">
+          Loading active handovers...
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 6: IMPACT AUDIT & METRICS (F6) -->
+    <!-- ============================================================ -->
+    <div id="tabPane_impact" class="tab-pane">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+        <div>
+          <h3 style="margin:0; font-family:Georgia,serif; font-size:1.4rem;">Verified Impact Audit (F6)</h3>
+          <div style="font-size:0.85rem; color:var(--muted); font-family:system-ui,sans-serif;">Anti-inflation rule: Counted strictly from verified handovers (OTP + photo + confirmations).</div>
+        </div>
+        <button class="btn btn-sm btn-outline" onclick="loadImpactMetrics()">🔄 Refresh Metrics</button>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="num" id="impactMeals">0</div>
+          <div class="lbl">Meals Rescued</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="impactKg">0 kg</div>
+          <div class="lbl">Food Saved from Waste</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="impactHandovers">0</div>
+          <div class="lbl">Verified Handovers</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="impactTripsSaved">0</div>
+          <div class="lbl">Delivery Trips Saved</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="impactWasteAvoided">0 kg</div>
+          <div class="lbl">Landfill Diversion</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <h4 style="margin:0 0 12px; font-family:Georgia,serif;">Weekly Per-Donor Leaderboard</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Donor Organization</th>
+              <th>Calendar Week</th>
+              <th>Meals Rescued</th>
+              <th>Quantity (kg)</th>
+              <th>Completed Handovers</th>
+            </tr>
+          </thead>
+          <tbody id="impactDonorsTableBody">
+            <tr><td colspan="5" style="text-align:center; padding:20px; color:var(--muted);">Loading verified donor impact...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 7: NGO DONATION PORTAL (EXISTING REPLACED WITH /API) -->
+    <!-- ============================================================ -->
+    <div id="tabPane_donorPortal" class="tab-pane">
+      <div class="portal-grid">
+        <!-- Step 1: Make a Donation -->
+        <div class="box">
+          <h3>Step 1: Make a Donation (Meals, Ration or Biogas)</h3>
+          <p class="sub">Choose what you want to donate. A 4-digit verification OTP is generated and stored securely on the server.</p>
+
+          <div class="type-switch">
+            <button type="button" class="type-btn active" id="typeMealBtn" onclick="switchDonationType('meal')">🍛 Meals</button>
+            <button type="button" class="type-btn" id="typeRationBtn" onclick="switchDonationType('ration')">🌾 Ration</button>
+            <button type="button" class="type-btn" id="typeBiogasBtn" onclick="switchDonationType('biogas')">♻️ Biogas / Waste</button>
+          </div>
+
+          <!-- Meal donation form -->
+          <form id="mealForm" onsubmit="handleDonate(event)">
+            <div class="form-group">
+              <label for="donorPhone">Your Phone Number</label>
+              <input type="tel" id="donorPhone" placeholder="e.g., 9876543210" required>
+            </div>
+            <div class="form-group">
+              <label for="ngoSelect">Select Ashram / NGO</label>
+              <select id="ngoSelect" required>
+                <option value="Shanti Ashram">Shanti Ashram</option>
+                <option value="Annapurna Seva Trust">Annapurna Seva Trust</option>
+                <option value="Karuna Shelter Home">Karuna Shelter Home</option>
+                <option value="Asha Night Shelter">Asha Night Shelter</option>
+                <option value="Seva Sadan Orphanage">Seva Sadan Orphanage</option>
+                <option value="Hope Community Kitchen">Hope Community Kitchen</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="mealCount">Number of Meals Donated</label>
+              <input type="number" id="mealCount" min="1" max="500" value="5" required>
+            </div>
+            <button type="submit" id="btnSubmitMeal" class="btn" style="width:100%;">Submit Meal Donation &amp; Send OTP</button>
+          </form>
+
+          <!-- Ration donation form -->
+          <form id="rationForm" class="hidden" onsubmit="handleRationDonate(event)">
+            <div class="ration-chips">
+              <span class="chip">Rice</span>
+              <span class="chip">Wheat / Atta</span>
+              <span class="chip">Grains</span>
+              <span class="chip">Pulses</span>
+              <span class="chip">Spices</span>
+            </div>
+            <div class="form-group">
+              <label for="rationPhone">Your Phone Number</label>
+              <input type="tel" id="rationPhone" placeholder="e.g., 9876543210" required>
+            </div>
+            <div class="form-group">
+              <label for="rationNgoSelect">Select Ashram / NGO</label>
+              <select id="rationNgoSelect" required>
+                <option value="Shanti Ashram">Shanti Ashram</option>
+                <option value="Annapurna Seva Trust">Annapurna Seva Trust</option>
+                <option value="Karuna Shelter Home">Karuna Shelter Home</option>
+                <option value="Asha Night Shelter">Asha Night Shelter</option>
+                <option value="Seva Sadan Orphanage">Seva Sadan Orphanage</option>
+                <option value="Hope Community Kitchen">Hope Community Kitchen</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="rationItem">Ration Item</label>
+              <select id="rationItem" required>
+                <option value="Rice">Rice</option>
+                <option value="Wheat / Atta">Wheat / Atta</option>
+                <option value="Other Grains (Jowar, Bajra, Ragi, Millets)">Other Grains (Jowar, Bajra, Ragi, Millets)</option>
+                <option value="Pulses / Dal">Pulses / Dal</option>
+                <option value="Spices">Spices (Turmeric, Chilli, Coriander, etc.)</option>
+              </select>
+            </div>
+            <div class="row2">
+              <div class="form-group">
+                <label for="rationQty">Quantity</label>
+                <input type="number" id="rationQty" min="0.5" step="0.5" value="5" required>
+              </div>
+              <div class="form-group">
+                <label for="rationUnit">Unit</label>
+                <select id="rationUnit">
+                  <option value="kg">kg</option>
+                  <option value="g">grams</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="rationNote">Notes (optional)</label>
+              <input type="text" id="rationNote" placeholder="e.g., sealed packets, best before Mar 2027">
+            </div>
+            <button type="submit" id="btnSubmitRation" class="btn" style="width:100%;">Submit Ration Donation &amp; Send OTP</button>
+          </form>
+
+          <!-- Biogas form -->
+          <form id="biogasForm" class="hidden" onsubmit="handleBiogasDonate(event)">
+            <div class="form-group">
+              <label for="biogasPhone">Your Phone Number</label>
+              <input type="tel" id="biogasPhone" placeholder="e.g., 9876543210" required>
+            </div>
+            <div class="form-group">
+              <label for="biogasNgoSelect">Ashram / NGO</label>
+              <select id="biogasNgoSelect" required>
+                <option value="Shanti Ashram">Shanti Ashram</option>
+                <option value="Annapurna Seva Trust">Annapurna Seva Trust</option>
+                <option value="Karuna Shelter Home">Karuna Shelter Home</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="wasteType">Type of Rotten / Wasted Food</label>
+              <select id="wasteType" onchange="updateWasteEstimate()" required></select>
+            </div>
+            <div class="form-group">
+              <label for="wasteQty">Quantity of Wasted Food (kg)</label>
+              <input type="number" id="wasteQty" min="1" step="0.5" value="10" oninput="updateWasteEstimate()" required>
+            </div>
+
+            <div style="background:#fff8e6; border:1px solid #f1deaa; border-radius:12px; padding:14px; margin-bottom:14px; font-size:.9rem;">
+              <div>Estimated amount you receive</div>
+              <div style="font-size:1.6rem; font-weight:700; color:#8a5a00;" id="estAmount">₹0</div>
+              <div style="display:flex; justify-content:space-between; color:var(--muted); margin-top:4px;">
+                <span>Rate</span><span id="estRate">₹0 / kg</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; color:var(--muted); margin-top:4px;">
+                <span>Estimated biogas</span><span id="estBiogas">0 m³</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; color:var(--muted); margin-top:4px;">
+                <span>Kept out of landfill</span><span id="estLandfill">0 kg</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="pickupAddress">Pickup Address</label>
+              <textarea id="pickupAddress" placeholder="House / Ashram name, street, area, city, PIN" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="partnerSelect">Biogas / Compost Collection Partner</label>
+              <select id="partnerSelect" onchange="showPartner()" required></select>
+            </div>
+            <div id="partnerBox" style="background:#f1f5ec; border-radius:12px; padding:12px; margin-bottom:14px; font-size:.88rem;"></div>
+
+            <button type="submit" id="btnSubmitBiogas" class="btn" style="width:100%;">Submit Waste Pickup &amp; Send OTP</button>
+          </form>
+
+          <div id="donateAlert" class="alert"></div>
+        </div>
+
+        <!-- Step 2: Confirm OTP -->
+        <div class="box">
+          <h3>Step 2: Confirm Donation Received (Enter OTP)</h3>
+          <p class="sub">Once the meal is served or ration received, enter the 4-digit OTP provided by the NGO.</p>
+          <form onsubmit="handleVerifyOTP(event)">
+            <div class="form-group">
+              <label for="verifyPhone">Your Registered Phone Number</label>
+              <input type="tel" id="verifyPhone" placeholder="e.g., 9876543210" required>
+            </div>
+            <div class="form-group">
+              <label for="otpInput">4-Digit OTP</label>
+              <input type="text" id="otpInput" maxlength="6" placeholder="e.g., 4829" required>
+            </div>
+            <button type="submit" id="btnSubmitVerify" class="btn" style="width:100%;">Verify OTP &amp; Log Official Timestamp</button>
+          </form>
+          <div id="verifyAlert" class="alert"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 8: NGO OFFICIAL DASHBOARD (EXISTING REPLACED WITH /API) -->
+    <!-- ============================================================ -->
+    <div id="tabPane_ngoDashboard" class="tab-pane">
+      <div class="box" style="margin-bottom:20px; display:flex; gap:16px; align-items:flex-end; flex-wrap:wrap; font-family:system-ui,sans-serif;">
+        <div style="flex:1; min-width:200px;">
+          <label style="display:block; font-size:.85rem; font-weight:600; margin-bottom:5px;">Filter by Ashram / NGO</label>
+          <select id="dashboardNgoFilter" onchange="renderNgoDashboard()" style="width:100%; padding:10px; border-radius:8px; border:1px solid #cbd5c0;">
+            <option value="ALL">All Registered NGOs</option>
+            <option value="Shanti Ashram">Shanti Ashram</option>
+            <option value="Annapurna Seva Trust">Annapurna Seva Trust</option>
+            <option value="Karuna Shelter Home">Karuna Shelter Home</option>
+            <option value="Asha Night Shelter">Asha Night Shelter</option>
+            <option value="Seva Sadan Orphanage">Seva Sadan Orphanage</option>
+            <option value="Hope Community Kitchen">Hope Community Kitchen</option>
+          </select>
+        </div>
+        <div style="flex:1; min-width:180px;">
+          <label style="display:block; font-size:.85rem; font-weight:600; margin-bottom:5px;">Select Month</label>
+          <input type="month" id="dashboardMonthFilter" onchange="renderNgoDashboard()" style="width:100%; padding:9px; border-radius:8px; border:1px solid #cbd5c0;">
+        </div>
+        <div style="flex:1; min-width:180px;">
+          <label style="display:block; font-size:.85rem; font-weight:600; margin-bottom:5px;">Donation Type</label>
+          <select id="dashboardTypeFilter" onchange="renderNgoDashboard()" style="width:100%; padding:10px; border-radius:8px; border:1px solid #cbd5c0;">
+            <option value="ALL">All Types</option>
+            <option value="MEAL">Meals only</option>
+            <option value="RATION">Ration only</option>
+            <option value="BIOGAS">Biogas / Waste only</option>
+          </select>
+        </div>
+        <button class="btn btn-sm btn-outline" onclick="renderNgoDashboard()">Refresh Records</button>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="num" id="statMealsServed">0</div>
+          <div class="lbl">Meals Served</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="statRationKg">0</div>
+          <div class="lbl">Ration Received (kg)</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="statWasteKg">0</div>
+          <div class="lbl">Wasted Food Diverted (kg)</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="statBiogasM3">0</div>
+          <div class="lbl">Est. Biogas (m³)</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="statOrdersServed">0</div>
+          <div class="lbl">Verified Donations</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="statPendingOtps">0</div>
+          <div class="lbl">Pending OTPs</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <h3 style="margin:0 0 12px; font-family:Georgia,serif;">Official NGO Donation &amp; OTP Verification Log</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Type</th>
+              <th>Donor Phone</th>
+              <th>Ashram / NGO</th>
+              <th>Details</th>
+              <th>Official OTP</th>
+              <th>Status</th>
+              <th>Date &amp; Time Verified</th>
+            </tr>
+          </thead>
+          <tbody id="recordsTableBody">
+            <tr><td colspan="8" style="text-align:center; padding:20px; color:var(--muted);">Loading records from server...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <strong>Annam Food Rescue Platform</strong>
+  <div>Real-time algorithmic food rescue connecting donors, receivers, and volunteers.</div>
+  <div class="links">
+    <a href="#portal" onclick="switchAppTab('board')">Expiry Board</a>
+    <a href="#portal" onclick="switchAppTab('post')">Post Surplus</a>
+    <a href="#portal" onclick="switchAppTab('route')">Routes &amp; Maps</a>
+    <a href="#portal" onclick="switchAppTab('impact')">Impact</a>
+    <a href="#portal" onclick="switchAppTab('donorPortal')">NGO Portal</a>
+  </div>
+  <div>© Annam. All rights reserved. Zero Waste, Zero Hunger.</div>
+</footer>
+
+<!-- Leaflet JS for guaranteed fallback -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Google Maps JavaScript API with YOUR_GOOGLE_MAPS_API_KEY placeholder -->
+<script>
+  window.GOOGLE_MAPS_API_KEY = "YOUR_GOOGLE_MAPS_API_KEY";
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=geometry&callback=onGoogleMapsLoaded" async defer onerror="onGoogleMapsError()"></script>
+
+<script>
+  // ============================================================
+  // GLOBAL STATE & CLOCK MANAGEMENT (SERVER IS SOURCE OF TRUTH)
+  // ============================================================
+  let serverOffsetMs = 0;
+  let cachedDonors = [];
+  let currentOpenPosts = [];
+  let sseEventSource = null;
+  let activeMapMode = 'google'; // 'google' or 'leaflet'
+  let googleMap = null;
+  let googleMarkers = [];
+  let googlePolyline = null;
+  let leafletMap = null;
+  let leafletLayerGroup = null;
+  let lastRouteData = null;
+
+  function serverNow() {
+    return Date.now() + serverOffsetMs;
+  }
+
+  function esc(str) {
+    return String(str || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function formatTime(isoStr) {
+    if (!isoStr) return '--:--';
+    const d = new Date(isoStr);
+    return d.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+  }
+
+  function formatDateTime(isoStr) {
+    if (!isoStr) return '--';
+    const d = new Date(isoStr);
+    return d.toLocaleDateString([], { month:'short', day:'numeric' }) + ' ' + d.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+  }
+
+  // ============================================================
+  // TAB NAVIGATION
+  // ============================================================
+  function switchAppTab(tabId) {
+    const tabs = ['board', 'post', 'match', 'route', 'handover', 'impact', 'donorPortal', 'ngoDashboard'];
+    tabs.forEach(t => {
+      const pane = document.getElementById('tabPane_' + t);
+      const btn = document.getElementById('tabBtn_' + t);
+      if (pane) pane.classList.toggle('active', t === tabId);
+      if (btn) btn.classList.toggle('active', t === tabId);
+    });
+
+    if (tabId === 'board') loadExpiryBoard();
+    if (tabId === 'post') { loadDonors(); fetchSuggestedSafeUntil(); }
+    if (tabId === 'match') loadOpenPostsForMatch();
+    if (tabId === 'route') {
+      setTimeout(() => {
+        if (googleMap && window.google) google.maps.event.trigger(googleMap, 'resize');
+        if (leafletMap) leafletMap.invalidateSize();
+      }, 200);
+    }
+    if (tabId === 'handover') loadHandovers();
+    if (tabId === 'impact') loadImpactMetrics();
+    if (tabId === 'ngoDashboard') renderNgoDashboard();
+  }
+
+  // ============================================================
+  // SSE: SERVER-SENT EVENTS
+  // ============================================================
+  function initSSE() {
+    if (sseEventSource) sseEventSource.close();
+    sseEventSource = new EventSource('/api/stream');
+
+    sseEventSource.addEventListener('tick', e => {
+      try {
+        const data = JSON.parse(e.data);
+        if (data.server_time) {
+          const sTime = Date.parse(data.server_time);
+          serverOffsetMs = sTime - Date.now();
+          const clockElem = document.getElementById('liveServerClock');
+          if (clockElem) {
+            clockElem.textContent = 'Server Time: ' + new Date(sTime).toLocaleTimeString();
+          }
+        }
+      } catch(err){}
+    });
+
+    const refreshEvents = ['post_created', 'match_accepted', 'match_declined', 'route_planned', 'in_transit', 'delivered', 'expired'];
+    refreshEvents.forEach(evt => {
+      sseEventSource.addEventListener(evt, () => {
+        loadExpiryBoard();
+        loadHandovers();
+        loadImpactMetrics();
+      });
+    });
+
+    sseEventSource.onerror = () => {
+      const clockElem = document.getElementById('liveServerClock');
+      if (clockElem) clockElem.textContent = 'Reconnecting live updates...';
+    };
+  }
+
+  // ============================================================
+  // F1: POST SURPLUS
+  // ============================================================
+  async function loadDonors() {
+    try {
+      const r = await fetch('/api/donors');
+      cachedDonors = await r.json();
+      const sel = document.getElementById('postDonorSelect');
+      if (sel) {
+        sel.innerHTML = cachedDonors.map(d => `<option value="${d.donor_id}">${esc(d.name)} (${esc(d.type)})</option>`).join('');
+      }
+    } catch(err) {
+      console.warn('Failed to load donors:', err);
+    }
+  }
+
+  function calcKgEst() {
+    const p = parseFloat(document.getElementById('postPortions').value) || 0;
+    const kg = (p * 0.4).toFixed(1);
+    document.getElementById('postKgHint').textContent = `~${kg} kg estimated (0.4 kg/meal)`;
+  }
+
+  async function fetchSuggestedSafeUntil() {
+    const food = document.getElementById('postFoodType').value;
+    const hold = document.getElementById('postHoldingMethod').value;
+    const cookedAgo = document.getElementById('postCookedAgo').value || 30;
+
+    try {
+      const r = await fetch(`/api/posts/suggest-safe-until?food_type=${encodeURIComponent(food)}&holding_method=${encodeURIComponent(hold)}&cooked_ago_min=${cookedAgo}`);
+      const d = await r.json();
+      if (r.ok) {
+        document.getElementById('suggestedSafeText').innerHTML = 
+          `Rule: <strong>${d.safe_minutes} mins</strong> total safe window. Safe until <strong>${formatTime(d.safe_until)}</strong>.<br><small>${esc(d.note)}</small>`;
+      } else {
+        document.getElementById('suggestedSafeText').textContent = d.error || 'No safety rule available.';
+      }
+    } catch (err) {
+      document.getElementById('suggestedSafeText').textContent = 'Cannot reach server.';
+    }
+  }
+
+  async function handlePostSurplus(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btnSubmitPost');
+    const alertBox = document.getElementById('postAlert');
+    btn.disabled = true;
+    btn.textContent = 'Submitting surplus...';
+    alertBox.className = 'alert';
+
+    const payload = {
+      donor_id: Number(document.getElementById('postDonorSelect').value),
+      portions: Number(document.getElementById('postPortions').value),
+      diet_type: document.getElementById('postDietType').value,
+      food_type: document.getElementById('postFoodType').value,
+      holding_method: document.getElementById('postHoldingMethod').value,
+      cooked_ago_min: Number(document.getElementById('postCookedAgo').value),
+      ready_in_min: Number(document.getElementById('postReadyIn').value),
+      packaging: document.getElementById('postPackaging').value
+    };
+
+    try {
+      const r = await fetch('/api/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'Failed to post surplus');
+
+      alertBox.className = 'alert success';
+      alertBox.innerHTML = `<strong>Surplus Post #${data.post_id} Created!</strong><br>
+        Portions: <strong>${data.portions}</strong> (${data.kg_estimate} kg) · Safe until: <strong>${formatTime(data.safe_until)}</strong> · Status: <strong>${data.status}</strong>.<br>
+        <button class="btn btn-sm" style="margin-top:8px;" onclick="selectPostForMatching(${data.post_id})">Find Receivers for This Post →</button>`;
+      
+      e.target.reset();
+      document.getElementById('postPortions').value = 25;
+      document.getElementById('postCookedAgo').value = 30;
+      document.getElementById('postReadyIn').value = 5;
+      calcKgEst();
+      loadExpiryBoard();
+    } catch(err) {
+      alertBox.className = 'alert error';
+      alertBox.textContent = err.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Post Surplus to Network';
+    }
+  }
+
+  // ============================================================
+  // F2: EXPIRY BOARD WITH LIVE COUNTDOWN
+  // ============================================================
+  async function loadExpiryBoard() {
+    try {
+      const r = await fetch('/api/posts?status=open');
+      const posts = await r.json();
+      currentOpenPosts = posts;
+
+      document.getElementById('statOpenPostsCount').textContent = posts.length;
+      document.getElementById('statUrgentPostsCount').textContent = posts.filter(p => p.slack_min <= 30).length;
+      document.getElementById('statTotalPortionsAvailable').textContent = posts.reduce((s, p) => s + p.portions, 0);
+
+      const listElem = document.getElementById('expiryBoardList');
+      if (posts.length === 0) {
+        listElem.innerHTML = `<div style="text-align:center; padding:30px; color:var(--muted); background:#fff; border-radius:12px;">No open surplus food posts right now. Post surplus or check again shortly.</div>`;
+        return;
+      }
+
+      listElem.innerHTML = posts.map(p => {
+        const leftSec = Math.max(0, Math.floor((Date.parse(p.safe_until) - serverNow()) / 1000));
+        const color = leftSec > 5400 ? 'green' : leftSec > 1800 ? 'amber' : 'red';
+        const minsLeft = Math.floor(leftSec / 60);
+        const secsRem = leftSec % 60;
+        const timeStr = `${minsLeft}m ${secsRem < 10 ? '0' : ''}${secsRem}s`;
+
+        return `
+          <div class="post-card ${color}" id="postCard_${p.post_id}" data-safe-until="${p.safe_until}">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px;">
+              <div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <strong style="font-size:1.05rem;">#${p.post_id} ${esc(p.donor_name)}</strong>
+                  <span class="badge ${p.diet_type === 'veg' ? 'served' : 'pending'}">${p.diet_type.toUpperCase()}</span>
+                  <span class="badge" style="background:#f1f5ec;">${esc(p.food_type)}</span>
+                </div>
+                <div style="color:var(--muted); font-size:.86rem; margin-top:3px;">
+                  ${p.portions} portions (~${p.kg_estimate} kg) · Ready at: ${formatTime(p.ready_at)} · Holding: ${esc(p.holding_method)}
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-weight:700; font-size:1.15rem; color:${color === 'red' ? '#b91c1c' : color === 'amber' ? '#b45309' : '#15803d'};" class="countdown-span" id="countdown_${p.post_id}">
+                  ⏱️ ${timeStr}
+                </div>
+                <div style="font-size:0.8rem; color:var(--muted);">
+                  Leave by: <strong>${formatTime(p.leave_by)}</strong> (slack: ${p.slack_min}m)
+                </div>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; padding-top:10px; border-top:1px dashed #e2e8f0;">
+              <small style="color:var(--muted);">Fastest delivery travel time: ${p.min_delivery_min} min</small>
+              <button class="btn btn-sm" onclick="selectPostForMatching(${p.post_id})">Match Receivers (F3) →</button>
+            </div>
+          </div>`;
+      }).join('');
+    } catch(err) {
+      console.warn('Failed to load expiry board:', err);
+    }
+  }
+
+  // Ticking countdown loop
+  setInterval(() => {
+    const cards = document.querySelectorAll('.post-card[data-safe-until]');
+    const now = serverNow();
+    cards.forEach(card => {
+      const safeUntil = Date.parse(card.getAttribute('data-safe-until'));
+      const leftSec = Math.max(0, Math.floor((safeUntil - now) / 1000));
+      const minsLeft = Math.floor(leftSec / 60);
+      const secsRem = leftSec % 60;
+      const span = card.querySelector('.countdown-span');
+      if (span) {
+        span.textContent = `⏱️ ${minsLeft}m ${secsRem < 10 ? '0' : ''}${secsRem}s`;
+      }
+      const newColor = leftSec > 5400 ? 'green' : leftSec > 1800 ? 'amber' : 'red';
+      card.className = `post-card ${newColor}`;
+    });
+  }, 1000);
+
+  // ============================================================
+  // F3: MATCH RECEIVERS
+  // ============================================================
+  async function loadOpenPostsForMatch() {
+    try {
+      const r = await fetch('/api/posts?status=open');
+      const posts = await r.json();
+      const sel = document.getElementById('matchPostSelector');
+      sel.innerHTML = `<option value="">Choose an open post...</option>` +
+        posts.map(p => `<option value="${p.post_id}">Post #${p.post_id} - ${esc(p.donor_name)} (${p.portions} portions ${p.diet_type})</option>`).join('');
+    } catch(err){}
+  }
+
+  function selectPostForMatching(postId) {
+    switchAppTab('match');
+    const sel = document.getElementById('matchPostSelector');
+    if (sel) {
+      sel.value = postId;
+      loadMatchesForSelected();
+    }
+  }
+
+  async function loadMatchesForSelected() {
+    const sel = document.getElementById('matchPostSelector');
+    const id = sel.value;
+    const area = document.getElementById('matchResultsArea');
+    if (!id) {
+      area.innerHTML = `<div style="text-align:center; padding:30px; color:var(--muted); background:#fff; border-radius:12px;">Select a post above to view receiver rankings.</div>`;
+      return;
+    }
+
+    area.innerHTML = `<div style="text-align:center; padding:30px; color:var(--muted); background:#fff; border-radius:12px;">Evaluating receiver matches and safety rules...</div>`;
+
+    try {
+      const r = await fetch(`/api/posts/${id}/matches`);
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'Failed to match');
+
+      let html = `
+        <div class="alert info" style="display:block; margin-bottom:16px;">
+          <strong>Food-Safety Disclaimer:</strong> ${esc(data.disclaimer)}
+        </div>`;
+
+      if (data.refusal_message) {
+        html += `
+          <div class="alert error" style="display:block; font-size:1.05rem; margin-bottom:16px;">
+            ⛔ <strong>REFUSAL BY SYSTEM:</strong> ${esc(data.refusal_message)}
+          </div>`;
+      }
+
+      if (data.eligible && data.eligible.length > 0) {
+        html += `<h4 style="margin:0 0 10px; font-family:Georgia,serif;">Eligible Receivers (Ranked by Multi-Factor Score)</h4>`;
+        html += data.eligible.map((e, idx) => `
+          <div class="match-candidate ${idx === 0 ? 'top' : ''}">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px;">
+              <div>
+                <strong style="font-size:1.05rem;">${idx === 0 ? '🏆 Top Choice: ' : ''}${esc(e.name)}</strong>
+                <div style="font-size:0.85rem; color:var(--muted); margin-top:2px;">
+                  Score: <strong>${e.score}</strong> · Distance: <strong>${e.km} km</strong> (${e.travel_min} min drive)
+                </div>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="btn btn-sm" onclick="acceptMatch(${e.match_id})">Accept Match</button>
+                <button class="btn btn-sm btn-outline btn-danger" onclick="declineMatch(${e.match_id})">Decline</button>
+              </div>
+            </div>
+            <div style="margin-top:8px; font-size:.88rem; color:#2c5282; background:#edf2f7; padding:8px 12px; border-radius:6px;">
+              💡 <strong>Match Reason:</strong> ${esc(e.reason)}
+            </div>
+            <div style="margin-top:8px; font-size:.78rem; color:var(--muted); display:flex; gap:16px; flex-wrap:wrap;">
+              <span>Closeness: ${(e.parts.closeness * 100).toFixed(0)}%</span>
+              <span>Capacity: ${(e.parts.capacity * 100).toFixed(0)}%</span>
+              <span>Slack Buffer: ${(e.parts.slack * 100).toFixed(0)}%</span>
+              <span>Urgency: ${(e.parts.urgency * 100).toFixed(0)}%</span>
+              <span>Fairness: ${(e.parts.fairness * 100).toFixed(0)}%</span>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      if (data.refused && data.refused.length > 0) {
+        html += `<h4 style="margin:20px 0 10px; font-family:Georgia,serif; color:var(--danger);">Refused Receivers (Hard Constraints)</h4>`;
+        html += data.refused.map(ref => `
+          <div style="background:#fff5f5; border:1px solid #feb2b2; border-radius:10px; padding:12px; margin-bottom:8px; font-size:.88rem;">
+            <strong>${esc(ref.name)}:</strong>
+            <ul style="margin:4px 0 0; padding-left:20px; color:#9b1c1c;">
+              ${ref.reasons.map(reason => `<li>${esc(reason)}</li>`).join('')}
+            </ul>
+          </div>
+        `).join('');
+      }
+
+      area.innerHTML = html;
+    } catch(err) {
+      area.innerHTML = `<div class="alert error">${esc(err.message)}</div>`;
+    }
+  }
+
+  async function acceptMatch(matchId) {
+    if (!confirm('Accept this match and proceed to route planning?')) return;
+    try {
+      const r = await fetch(`/api/matches/${matchId}/accept`, { method: 'POST' });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'Failed to accept match');
+      alert('Match accepted! Routing to batch planning...');
+      switchAppTab('route');
+      planBatchRoute();
+    } catch(err) {
+      alert('Error: ' + err.message);
+    }
+  }
+
+  async function declineMatch(matchId) {
+    try {
+      const r = await fetch(`/api/matches/${matchId}/decline`, { method: 'POST' });
+      const d = await r.json();
+      loadMatchesForSelected();
+    } catch(err) {
+      alert('Error: ' + err.message);
+    }
+  }
+
+  // ============================================================
+  // F4: ROUTE BATCHING & GOOGLE MAPS INTEGRATION
+  // ============================================================
+  async function planBatchRoute() {
+    const btn = document.getElementById('btnPlanBatch');
+    const area = document.getElementById('routeDetailsArea');
+    btn.disabled = true;
+    btn.textContent = 'Planning batch...';
+
+    try {
+      const r = await fetch('/api/routes/batch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ max_stops: 5 })
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'Failed to batch routes');
+
+      renderRouteDetails(data);
+      if (data.route && data.route.route_id) {
+        fetchAndDrawPolyline(data.route.route_id);
+      }
+    } catch(err) {
+      area.innerHTML = `<div class="alert error" style="display:block;">${esc(err.message)}</div>`;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '🚗 Plan Optimal Batched Route';
+    }
+  }
+
+  function renderRouteDetails(data) {
+    lastRouteData = data;
+    const b = data.batching || {};
+    const route = data.route || {};
+    const area = document.getElementById('routeDetailsArea');
+
+    let volunteerText = 'Volunteer: ';
+    if (typeof data.volunteer === 'object' && data.volunteer) {
+      volunteerText += `${esc(data.volunteer.name)} (${esc(data.volunteer.vehicle)})`;
+    } else {
+      volunteerText += 'Receiver collects directly';
+    }
+
+    area.innerHTML = `
+      <div class="box" style="margin-bottom:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h3 style="margin:0;">Route #${route.route_id} Planned (${route.status})</h3>
+            <div style="color:var(--muted); font-size:.9rem; margin-top:2px;">
+              Destination: <strong>${esc(route.receiver.name)}</strong> · ${volunteerText}
+            </div>
+          </div>
+          <div>
+            <button class="btn btn-sm" onclick="startTrip(${route.route_id})">🚀 Start Trip</button>
+          </div>
+        </div>
+
+        <div class="stats-row" style="margin-top:16px;">
+          <div class="stat-card">
+            <div class="num">${b.stops || 0}</div>
+            <div class="lbl">Batched Stops</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">${b.trip_reduction_pct || 0}%</div>
+            <div class="lbl">Trip Reduction</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">${b.batched_minutes || 0}m</div>
+            <div class="lbl">Batched Travel Time</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">${b.separate_trips_minutes || 0}m</div>
+            <div class="lbl">Separate Trips Time</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">${b.trips_saved || 0}</div>
+            <div class="lbl">Trips Saved</div>
+          </div>
+        </div>
+
+        <div style="background:#f7fafc; padding:12px; border-radius:8px; font-size:.88rem; margin-top:10px;">
+          <strong>Pickup Stops Schedule:</strong>
+          <ol style="margin:6px 0 0; padding-left:20px;">
+            ${(route.stops || []).map(s => `<li>${esc(s.donor.name)} (${s.portions} portions) - ETA: <strong>${formatTime(s.eta)}</strong></li>`).join('')}
+          </ol>
+          <div style="margin-top:6px;">Final Deliver ETA to ${esc(route.receiver.name)}: <strong>${formatTime(route.deliver_eta)}</strong></div>
+          ${data.demo_otp ? `<div style="margin-top:6px; color:#276749;">🔑 Receiver Delivery OTP (Demo): <strong>${esc(data.demo_otp)}</strong></div>` : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  async function startTrip(routeId) {
+    try {
+      const r = await fetch(`/api/routes/${routeId}/start`, { method: 'POST' });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'Failed to start trip');
+      alert(`Trip #${routeId} is now in transit! Food safety clock running.`);
+      switchAppTab('handover');
+    } catch(err) {
+      alert('Error: ' + err.message);
+    }
+  }
+
+  async function loadExistingRoutes() {
+    try {
+      const r = await fetch('/api/routes');
+      const routes = await r.json();
+      if (routes.length > 0) {
+        fetchAndDrawPolyline(routes[0].route_id);
+      } else {
+        alert('No planned routes found.');
+      }
+    } catch(err){}
+  }
+
+  async function fetchAndDrawPolyline(routeId) {
+    try {
+      const r = await fetch(`/api/routes/${routeId}`);
+      const route = await r.json();
+      drawRouteOnMap(route);
+    } catch(err) {
+      console.warn('Polyline fetch failed:', err);
+    }
+  }
+
+  // ============================================================
+  // MAP RENDERING: GOOGLE MAPS WITH LEAFLET FALLBACK
+  // ============================================================
+  let isGoogleMapsAvailable = false;
+
+  function onGoogleMapsLoaded() {
+    isGoogleMapsAvailable = true;
+    initGoogleMap();
+  }
+
+  function onGoogleMapsError() {
+    isGoogleMapsAvailable = false;
+    document.getElementById('mapEngineBadge').textContent = 'OpenStreetMap (Fallback)';
+    document.getElementById('mapEngineBadge').style.background = '#fef3c7';
+    document.getElementById('mapEngineBadge').style.color = '#92400e';
+    initLeafletMap();
+  }
+
+  function initGoogleMap() {
+    if (!window.google || !window.google.maps) return;
+    const center = { lat: 12.96, lng: 77.59 };
+    googleMap = new google.maps.Map(document.getElementById('googleMapContainer'), {
+      center: center,
+      zoom: 13,
+      mapTypeId: 'roadmap',
+      fullscreenControl: false,
+      streetViewControl: false
+    });
+    document.getElementById('mapEngineBadge').textContent = 'Google Maps Active';
+  }
+
+  function initLeafletMap() {
+    if (leafletMap) return;
+    leafletMap = L.map('leafletMapContainer').setView([12.96, 77.59], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap'
+    }).addTo(leafletMap);
+    leafletLayerGroup = L.layerGroup().addTo(leafletMap);
+  }
+
+  function toggleMapEngine() {
+    const gContainer = document.getElementById('googleMapContainer');
+    const lContainer = document.getElementById('leafletMapContainer');
+    const badge = document.getElementById('mapEngineBadge');
+
+    if (activeMapMode === 'google') {
+      activeMapMode = 'leaflet';
+      gContainer.style.display = 'none';
+      lContainer.style.display = 'block';
+      initLeafletMap();
+      badge.textContent = 'Leaflet (OSM) Active';
+      leafletMap.invalidateSize();
+    } else {
+      activeMapMode = 'google';
+      gContainer.style.display = 'block';
+      lContainer.style.display = 'none';
+      badge.textContent = isGoogleMapsAvailable ? 'Google Maps Active' : 'Google Maps (Demo Key)';
+      if (googleMap) google.maps.event.trigger(googleMap, 'resize');
+    }
+
+    if (lastRouteData && lastRouteData.route) {
+      drawRouteOnMap(lastRouteData.route);
+    }
+  }
+
+  function drawRouteOnMap(route) {
+    if (!route) return;
+
+    // 1. Google Maps rendering
+    if (googleMap && window.google && window.google.maps) {
+      googleMarkers.forEach(m => m.setMap(null));
+      googleMarkers = [];
+      if (googlePolyline) googlePolyline.setMap(null);
+
+      const bounds = new google.maps.LatLngBounds();
+
+      // Donor stops
+      (route.stops || []).forEach((s, idx) => {
+        if (s.donor && s.donor.lat && s.donor.lng) {
+          const pos = { lat: s.donor.lat, lng: s.donor.lng };
+          bounds.extend(pos);
+          const marker = new google.maps.Marker({
+            position: pos,
+            map: googleMap,
+            title: `Stop ${idx + 1}: ${s.donor.name}`,
+            label: `${idx + 1}`
+          });
+          googleMarkers.push(marker);
+        }
+      });
+
+      // Receiver destination
+      if (route.receiver && route.receiver.lat && route.receiver.lng) {
+        const rPos = { lat: route.receiver.lat, lng: route.receiver.lng };
+        bounds.extend(rPos);
+        const rMarker = new google.maps.Marker({
+          position: rPos,
+          map: googleMap,
+          title: `Delivery Receiver: ${route.receiver.name}`,
+          icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
+        });
+        googleMarkers.push(rMarker);
+      }
+
+      // Polyline
+      if (route.polyline && route.polyline.length) {
+        const pathCoords = route.polyline.map(pt => ({ lat: pt[0], lng: pt[1] }));
+        googlePolyline = new google.maps.Polyline({
+          path: pathCoords,
+          geodesic: true,
+          strokeColor: '#2f6b3f',
+          strokeOpacity: 0.9,
+          strokeWeight: 5
+        });
+        googlePolyline.setMap(googleMap);
+      }
+
+      if (!bounds.isEmpty()) googleMap.fitBounds(bounds);
+    }
+
+    // 2. Leaflet rendering fallback
+    initLeafletMap();
+    if (leafletLayerGroup) {
+      leafletLayerGroup.clearLayers();
+      const lBounds = [];
+
+      (route.stops || []).forEach((s, idx) => {
+        if (s.donor) {
+          const pt = [s.donor.lat, s.donor.lng];
+          lBounds.push(pt);
+          L.marker(pt).bindPopup(`<b>Stop ${idx + 1}:</b> ${esc(s.donor.name)}<br>ETA: ${formatTime(s.eta)}`).addTo(leafletLayerGroup);
+        }
+      });
+
+      if (route.receiver) {
+        const rpt = [route.receiver.lat, route.receiver.lng];
+        lBounds.push(rpt);
+        L.marker(rpt).bindPopup(`<b>Receiver:</b> ${esc(route.receiver.name)}<br>Final ETA: ${formatTime(route.deliver_eta)}`).addTo(leafletLayerGroup);
+      }
+
+      if (route.polyline && route.polyline.length) {
+        L.polyline(route.polyline, { color: '#2f6b3f', weight: 4 }).addTo(leafletLayerGroup);
+      }
+
+      if (lBounds.length && leafletMap) {
+        leafletMap.fitBounds(lBounds, { padding: [30, 30] });
+      }
+    }
+  }
+
+  // ============================================================
+  // F5: HANDOVER (DONOR / DRIVER / RECEIVER)
+  // ============================================================
+  async function loadHandovers() {
+    const area = document.getElementById('handoversListArea');
+    try {
+      const r = await fetch('/api/handovers');
+      const handovers = await r.json();
+
+      if (handovers.length === 0) {
+        area.innerHTML = `<div style="text-align:center; padding:30px; color:var(--muted); background:#fff; border-radius:12px;">No active handovers found. Plan a route to generate handovers.</div>`;
+        return;
+      }
+
+      area.innerHTML = handovers.map(h => `
+        <div class="handover-card" id="handoverCard_${h.handover_id}">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px;">
+            <div>
+              <strong style="font-size:1.1rem;">Handover #${h.handover_id} (Post #${h.post_id}, Route #${h.route_id || 'N/A'})</strong>
+              <div style="font-size:.85rem; color:var(--muted);">Status: ${h.completed_at ? '<span class="badge served">Completed</span>' : '<span class="badge pending">Awaiting Verification</span>'}</div>
+            </div>
+            ${h.completed_at ? `<div style="color:#2f855a; font-weight:600;">✓ Verified at ${formatDateTime(h.completed_at)}</div>` : ''}
+          </div>
+
+          <div class="checklist">
+            <div class="checklist-item">
+              <span class="check-icon ${h.donor_confirmed ? 'done' : ''}">${h.donor_confirmed ? '✓' : '1'}</span>
+              <span><strong>Step 1 (Donor):</strong> Pickup confirmed by donor</span>
+              ${!h.donor_confirmed ? `<button class="btn btn-sm btn-outline" onclick="confirmHandover(${h.handover_id}, 'donor')">Confirm Pickup</button>` : '<span style="color:#2f855a; font-size:.82rem;">Confirmed</span>'}
+            </div>
+
+            <div class="checklist-item">
+              <span class="check-icon ${h.photo ? 'done' : ''}">${h.photo ? '✓' : '2'}</span>
+              <span><strong>Step 2 (Driver):</strong> Proof-of-condition photo uploaded</span>
+              ${!h.photo ? `
+                <div style="display:inline-flex; align-items:center; gap:6px;">
+                  <input type="file" id="driverPhoto_${h.handover_id}" accept="image/*" style="font-size:.8rem; max-width:180px;">
+                  <button class="btn btn-sm btn-outline" onclick="uploadDriverPhoto(${h.handover_id})">Upload</button>
+                </div>
+              ` : `<a href="${h.photo}" target="_blank" style="color:var(--accent); text-decoration:underline; font-size:.85rem;">View Photo</a>`}
+            </div>
+
+            <div class="checklist-item">
+              <span class="check-icon ${h.receiver_confirmed ? 'done' : ''}">${h.receiver_confirmed ? '✓' : '3'}</span>
+              <span><strong>Step 3 (Receiver):</strong> Receiver enters 4-digit OTP</span>
+              ${!h.receiver_confirmed ? `
+                <div style="display:inline-flex; align-items:center; gap:6px;">
+                  <input type="text" id="receiverOtp_${h.handover_id}" placeholder="OTP" maxlength="6" style="width:75px; padding:4px 8px; border-radius:6px; border:1px solid #cbd5c0; font-size:.85rem;">
+                  <button class="btn btn-sm btn-outline" onclick="submitReceiverOtp(${h.handover_id})">Verify OTP</button>
+                </div>
+              ` : '<span style="color:#2f855a; font-size:.82rem;">Verified</span>'}
+            </div>
+          </div>
+          <div id="handoverAlert_${h.handover_id}" class="alert"></div>
+        </div>
+      `).join('');
+    } catch(err) {
+      area.innerHTML = `<div class="alert error">${esc(err.message)}</div>`;
+    }
+  }
+
+  async function confirmHandover(handoverId, role) {
+    try {
+      const r = await fetch(`/api/handovers/${handoverId}/confirm`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role: role })
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'Failed to confirm');
+      loadHandovers();
+    } catch(err) {
+      alert('Error: ' + err.message);
+    }
+  }
+
+  function uploadDriverPhoto(handoverId) {
+    const input = document.getElementById(`driverPhoto_${handoverId}`);
+    if (!input || !input.files || !input.files[0]) {
+      alert('Please select an image file first.');
+      return;
+    }
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const base64Data = reader.result;
+      try {
+        const r = await fetch(`/api/handovers/${handoverId}/confirm`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ role: 'driver', photo: base64Data })
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.error || 'Upload failed');
+        loadHandovers();
+      } catch(err) {
+        alert('Photo error: ' + err.message);
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async function submitReceiverOtp(handoverId) {
+    const input = document.getElementById(`receiverOtp_${handoverId}`);
+    const otp = input.value.trim();
+    const alertElem = document.getElementById(`handoverAlert_${handoverId}`);
+    if (!otp) {
+      alert('Please enter the OTP.');
+      return;
+    }
+
+    try {
+      const r = await fetch(`/api/handovers/${handoverId}/confirm`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role: 'receiver', otp: otp })
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'Verification failed');
+      alertElem.className = 'alert success';
+      alertElem.innerHTML = `<strong>Handover #${handoverId} Complete!</strong> Both confirmations & photo verified. Impact counted.`;
+      loadHandovers();
+      loadImpactMetrics();
+    } catch(err) {
+      alertElem.className = 'alert error';
+      alertElem.textContent = err.message;
+    }
+  }
+
+  // ============================================================
+  // F6: IMPACT METRICS
+  // ============================================================
+  async function loadImpactMetrics() {
+    try {
+      const r = await fetch('/api/impact');
+      const d = await r.json();
+      document.getElementById('impactMeals').textContent = d.meals || 0;
+      document.getElementById('impactKg').textContent = (d.kg || 0) + ' kg';
+      document.getElementById('impactHandovers').textContent = d.verified_handovers || 0;
+      document.getElementById('impactTripsSaved').textContent = d.trips_saved || 0;
+      document.getElementById('impactWasteAvoided').textContent = (d.kg_waste_avoided || 0) + ' kg';
+
+      // Donors table
+      const rd = await fetch('/api/impact/donors');
+      const donors = await rd.json();
+      const tbody = document.getElementById('impactDonorsTableBody');
+      if (donors.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px; color:var(--muted);">No verified donor handovers logged yet.</td></tr>`;
+      } else {
+        tbody.innerHTML = donors.map(dn => `
+          <tr>
+            <td><strong>${esc(dn.name)}</strong></td>
+            <td><code>${esc(dn.week)}</code></td>
+            <td><strong>${dn.meals}</strong> meals</td>
+            <td>${dn.kg} kg</td>
+            <td><span class="badge served">${dn.handovers} verified</span></td>
+          </tr>
+        `).join('');
+      }
+    } catch(err){}
+  }
+
+  // ============================================================
+  // LEGACY NGO PORTAL LOGIC (INTEGRATED DIRECTLY TO /API)
+  // ============================================================
+  const WASTE_RATES = {
+    'Cooked food (rice, dal, curry, roti)': 3,
+    'Vegetable & fruit scraps / spoiled produce': 2,
+    'Spoiled grains, bread & bakery items': 4,
+    'Mixed kitchen waste (dairy, sweets, etc.)': 2
+  };
+  const BIOGAS_M3_PER_KG = 0.1;
+
+  const PARTNERS = [
+    { name: 'Green Loop Biogas Plant (Sample)', address: 'Plot 12, Industrial Area, Phase 2, Bangalore - 560001', phone: '+91 90000 00001' },
+    { name: 'City Compost & CBG Centre (Sample)', address: 'Municipal Waste Yard, Ring Road, Bangalore - 560002', phone: '+91 90000 00002' },
+    { name: 'Gaushala Feed Collection Point (Sample)', address: 'Near Main Gaushala, Village Road, Bangalore - 560003', phone: '+91 90000 00003' }
+  ];
+
+  (function initBiogasDropdowns() {
+    const typeSel = document.getElementById('wasteType');
+    if (typeSel) typeSel.innerHTML = Object.keys(WASTE_RATES).map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join('');
+    const partnerSel = document.getElementById('partnerSelect');
+    if (partnerSel) partnerSel.innerHTML = PARTNERS.map((p, i) => `<option value="${i}">${esc(p.name)}</option>`).join('');
+    updateWasteEstimate();
+    showPartner();
+  })();
+
+  function updateWasteEstimate() {
+    const type = document.getElementById('wasteType').value;
+    const qty = parseFloat(document.getElementById('wasteQty').value) || 0;
+    const rate = WASTE_RATES[type] || 0;
+    document.getElementById('estAmount').textContent = '₹' + (qty * rate).toFixed(2);
+    document.getElementById('estRate').textContent = '₹' + rate + ' / kg';
+    document.getElementById('estBiogas').textContent = (qty * BIOGAS_M3_PER_KG).toFixed(2) + ' m³';
+    document.getElementById('estLandfill').textContent = qty.toFixed(1) + ' kg';
+  }
+
+  function showPartner() {
+    const p = PARTNERS[parseInt(document.getElementById('partnerSelect').value, 10)];
+    if (p) {
+      document.getElementById('partnerBox').innerHTML =
+        `<strong>${esc(p.name)}</strong>📍 ${esc(p.address)}<br>📞 ${esc(p.phone)}`;
+    }
+  }
+
+  function switchDonationType(type) {
+    const forms = { meal: 'mealForm', ration: 'rationForm', biogas: 'biogasForm' };
+    const btns = { meal: 'typeMealBtn', ration: 'typeRationBtn', biogas: 'typeBiogasBtn' };
+    document.getElementById('donateAlert').className = 'alert';
+    Object.keys(forms).forEach(k => {
+      document.getElementById(forms[k]).classList.toggle('hidden', k !== type);
+      document.getElementById(btns[k]).classList.toggle('active', k === type);
+    });
+  }
+
+  // 1a. Meal Donation -> POST /api/donations
+  async function handleDonate(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btnSubmitMeal');
+    const alertBox = document.getElementById('donateAlert');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    const payload = {
+      type: 'MEAL',
+      phone: document.getElementById('donorPhone').value.trim(),
+      ngo: document.getElementById('ngoSelect').value,
+      meals: parseInt(document.getElementById('mealCount').value, 10)
+    };
+
+    try {
+      const r = await fetch('/api/donations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'Server error');
+
+      document.getElementById('verifyPhone').value = payload.phone;
+      alertBox.className = 'alert success';
+      alertBox.innerHTML = `<strong>Meal Donation Registered (${data.id})!</strong><br>
+        A 4-digit verification OTP has been sent via WhatsApp/Demo to <strong>${esc(data.ngo)}</strong>.<br>
+        <em>(Demo OTP: <strong>${data.otp}</strong>. Enter it in Step 2 once food is served.)</em>`;
+      e.target.reset();
+      document.getElementById('mealCount').value = 5;
+    } catch(err) {
+      alertBox.className = 'alert error';
+      alertBox.textContent = err.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Submit Meal Donation & Send OTP';
+    }
+  }
+
+  // 1b. Ration Donation -> POST /api/donations
+  async function handleRationDonate(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btnSubmitRation');
+    const alertBox = document.getElementById('donateAlert');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    const qtyInput = parseFloat(document.getElementById('rationQty').value);
+    const unit = document.getElementById('rationUnit').value;
+    const qtyKg = unit === 'g' ? qtyInput / 1000 : qtyInput;
+
+    const payload = {
+      type: 'RATION',
+      phone: document.getElementById('rationPhone').value.trim(),
+      ngo: document.getElementById('rationNgoSelect').value,
+      item: document.getElementById('rationItem').value,
+      qtyKg: qtyKg,
+      qtyLabel: qtyInput + ' ' + unit,
+      note: document.getElementById('rationNote').value.trim()
+    };
+
+    try {
+      const r = await fetch('/api/donations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'Server error');
+
+      document.getElementById('verifyPhone').value = payload.phone;
+      alertBox.className = 'alert success';
+      alertBox.innerHTML = `<strong>Ration Donation Registered (${data.id})!</strong><br>
+        ${esc(payload.qtyLabel)} of <strong>${esc(payload.item)}</strong> pledged to <strong>${esc(payload.ngo)}</strong>.<br>
+        <em>(Demo OTP: <strong>${data.otp}</strong>. Enter in Step 2 once received.)</em>`;
+      e.target.reset();
+      document.getElementById('rationQty').value = 5;
+    } catch(err) {
+      alertBox.className = 'alert error';
+      alertBox.textContent = err.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Submit Ration Donation & Send OTP';
+    }
+  }
+
+  // 1c. Biogas Donation -> POST /api/donations
+  async function handleBiogasDonate(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btnSubmitBiogas');
+    const alertBox = document.getElementById('donateAlert');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    const wasteType = document.getElementById('wasteType').value;
+    const qtyKg = parseFloat(document.getElementById('wasteQty').value);
+    const rate = WASTE_RATES[wasteType] || 0;
+    const partner = PARTNERS[parseInt(document.getElementById('partnerSelect').value, 10)];
+
+    const payload = {
+      type: 'BIOGAS',
+      phone: document.getElementById('biogasPhone').value.trim(),
+      ngo: document.getElementById('biogasNgoSelect').value,
+      wasteType: wasteType,
+      qtyKg: qtyKg,
+      rate: rate,
+      amount: +(qtyKg * rate).toFixed(2),
+      biogasM3: +(qtyKg * BIOGAS_M3_PER_KG).toFixed(2),
+      address: document.getElementById('pickupAddress').value.trim(),
+      partnerName: partner.name,
+      partnerAddress: partner.address,
+      partnerPhone: partner.phone
+    };
+
+    try {
+      const r = await fetch('/api/donations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'Server error');
+
+      document.getElementById('verifyPhone').value = payload.phone;
+      alertBox.className = 'alert success';
+      alertBox.innerHTML = `<strong>Waste Pickup Registered (${data.id})!</strong><br>
+        <strong>${qtyKg} kg</strong> of ${esc(wasteType)} at ₹${rate}/kg = <strong>₹${payload.amount}</strong> estimated.<br>
+        <em>(Demo OTP: <strong>${data.otp}</strong>. Enter in Step 2 once collected.)</em>`;
+      e.target.reset();
+      document.getElementById('wasteQty').value = 10;
+      updateWasteEstimate();
+    } catch(err) {
+      alertBox.className = 'alert error';
+      alertBox.textContent = err.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Submit Waste Pickup & Send OTP';
+    }
+  }
+
+  // 2. Verify OTP -> POST /api/donations/verify
+  async function handleVerifyOTP(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btnSubmitVerify');
+    const alertBox = document.getElementById('verifyAlert');
+    btn.disabled = true;
+    btn.textContent = 'Verifying with server...';
+
+    const phone = document.getElementById('verifyPhone').value.trim();
+    const otp = document.getElementById('otpInput').value.trim();
+
+    try {
+      const r = await fetch('/api/donations/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, otp })
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'Verification failed');
+
+      alertBox.className = 'alert success';
+      alertBox.innerHTML = `<strong>Verified! Donation ${data.id} marked as SERVED at ${esc(data.ngo)}.</strong><br>
+        Official Server Timestamp Recorded: <strong>${esc(data.servedAt)}</strong>`;
+      e.target.reset();
+      renderNgoDashboard();
+    } catch(err) {
+      alertBox.className = 'alert error';
+      alertBox.textContent = err.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Verify OTP & Log Official Timestamp';
+    }
+  }
+
+  // 3. NGO Official Dashboard -> GET /api/donations
+  async function renderNgoDashboard() {
+    const selectedNgo = document.getElementById('dashboardNgoFilter').value;
+    const selectedMonth = document.getElementById('dashboardMonthFilter').value;
+    const selectedType = document.getElementById('dashboardTypeFilter').value;
+
+    const params = new URLSearchParams();
+    if (selectedNgo && selectedNgo !== 'ALL') params.set('ngo', selectedNgo);
+    if (selectedMonth) params.set('month', selectedMonth);
+    if (selectedType && selectedType !== 'ALL') params.set('type', selectedType);
+
+    try {
+      const r = await fetch('/api/donations?' + params.toString());
+      const donations = await r.json();
+
+      const served = donations.filter(d => d.status === 'SERVED');
+      const pending = donations.filter(d => d.status === 'PENDING');
+      const totalMeals = served.filter(d => d.type === 'MEAL').reduce((s, d) => s + (d.meals || 0), 0);
+      const totalKg = served.filter(d => d.type === 'RATION').reduce((s, d) => s + (d.qtyKg || 0), 0);
+      const wasteRecords = served.filter(d => d.type === 'BIOGAS');
+      const wasteKg = wasteRecords.reduce((s, d) => s + (d.qtyKg || 0), 0);
+      const wasteBiogas = wasteRecords.reduce((s, d) => s + (d.biogasM3 || 0), 0);
+
+      document.getElementById('statMealsServed').textContent = totalMeals;
+      document.getElementById('statRationKg').textContent = totalKg.toFixed(1);
+      document.getElementById('statWasteKg').textContent = wasteKg.toFixed(1);
+      document.getElementById('statBiogasM3').textContent = wasteBiogas.toFixed(2);
+      document.getElementById('statOrdersServed').textContent = served.length;
+      document.getElementById('statPendingOtps').textContent = pending.length;
+
+      const tbody = document.getElementById('recordsTableBody');
+      if (donations.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:20px; color:var(--muted);">No donation records found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = donations.map(d => {
+        let details = '', badgeClass = 'meal', badgeLabel = 'Meal', doneLabel = 'SERVED';
+        if (d.type === 'RATION') {
+          details = `<strong>${esc(d.qtyLabel)}</strong> ${esc(d.item)}`;
+          badgeClass = 'ration'; badgeLabel = 'Ration'; doneLabel = 'RECEIVED';
+        } else if (d.type === 'BIOGAS') {
+          details = `<strong>${d.qtyKg} kg</strong> ${esc(d.wasteType)} (₹${d.amount})`;
+          badgeClass = 'biogas'; badgeLabel = 'Biogas'; doneLabel = 'COLLECTED';
+        } else {
+          details = `<strong>${d.meals}</strong> meal(s)`;
+        }
+
+        const isServed = d.status === 'SERVED';
+        return `
+          <tr>
+            <td><strong>${esc(d.id)}</strong></td>
+            <td><span class="badge ${badgeClass}">${badgeLabel}</span></td>
+            <td>${esc(d.phone)}</td>
+            <td>${esc(d.ngo)}</td>
+            <td>${details}</td>
+            <td><code style="background:#f3f4f6; padding:3px 7px; border-radius:4px; font-weight:bold;">${esc(d.otp)}</code></td>
+            <td><span class="badge ${isServed ? 'served' : 'pending'}">${isServed ? doneLabel : 'PENDING'}</span></td>
+            <td>${d.servedAt ? esc(d.servedAt) : '<em>Awaiting OTP verification</em>'}</td>
+          </tr>`;
+      }).join('');
+    } catch(err) {
+      console.warn('Dashboard fetch failed:', err);
+    }
+  }
+
+  // ============================================================
+  // INITIALIZATION ON PAGE LOAD
+  // ============================================================
+  document.addEventListener('DOMContentLoaded', () => {
+    // Set default month
+    const d = new Date();
+    const curMonth = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+    const mInput = document.getElementById('dashboardMonthFilter');
+    if (mInput) mInput.value = curMonth;
+
+    initSSE();
+    loadExpiryBoard();
+    loadDonors();
+    loadImpactMetrics();
+    renderNgoDashboard();
+
+    // Check server health and config
+    fetch('/api/health')
+      .then(r => r.json())
+      .then(data => {
+        if (data.server_time) {
+          serverOffsetMs = Date.parse(data.server_time) - Date.now();
+        }
+      })
+      .catch(() => {
+        const b = document.getElementById('globalServerBanner');
+        if (b) {
+          b.style.display = 'block';
+          b.innerHTML = '⚠️ <strong>Server Unreachable:</strong> Please ensure the Annam backend server is running on port 3000 (<code>npm start</code>).';
+        }
+      });
+  });
+</script>
+
+</body>
+</html>
